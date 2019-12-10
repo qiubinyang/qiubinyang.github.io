@@ -40,7 +40,7 @@
     
         "keywords": "基础知识笔记, 机器学习, 异常检测",
     
-    "wordcount":  2643 ,
+    "wordcount":  2627 ,
     "url": "https:\/\/qiubinyang.github.io\/2019\/12\/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B\/",
     
         "datePublished": "2019-12-11T02:28:35\x2b08:00",
@@ -81,7 +81,7 @@
         <div class="wrapper">
             <nav class="navbar">
     <div class="navbar-container">
-        <div class="navbar-header">
+        <div class="navbar-header animated bounceIn">
             <a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a>
         </div>
         <div class="navbar-menu">
@@ -102,7 +102,9 @@
 <nav class="navbar-mobile">
      <div class="navbar-container">
         <div class="navbar-header">
-            <div><a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a><a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a></div>
+            <div class="navbar-header-title animated bounceIn">
+                <a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a>
+            </div>
             <div class="menu-toggle" id="menu-toggle">
                 <span></span><span></span><span></span>
             </div>
@@ -118,6 +120,7 @@
             
                 <a class="menu-item" href="https://qiubinyang.github.io/about" title="">关于</a>
             
+            <a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a>
         </div>
     </div>
 </nav><main class="main">
@@ -141,7 +144,7 @@
             </div>
             <div class="post-meta-other">
                 <i class="far fa-calendar-alt fa-fw"></i><time datetime=2019-12-11>2019-12-11</time>&nbsp;
-                <i class="fas fa-pencil-alt fa-fw"></i>约 2643 字&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>约 2627 字&nbsp;
                 <i class="far fa-clock fa-fw"></i>预计阅读 6 分钟&nbsp;</div>
         </div>
 
@@ -286,42 +289,26 @@
 <a class="post-dummy-target" id="类型"></a><h2>类型：</h2>
 
 <ol>
-<li>点异常</li>
+<li><strong>点异常</strong><br>
+单个数据与其余数据特征存在巨大差别。</li>
+<li><strong>上下文异常</strong><br>
+统计指标上显示无异常，但是放在上下文环境中呈现异常。</li>
+<li><strong>集体异常</strong><br>
+一个数据集合相对于整个集合是异常的。</li>
 </ol>
-
-<p>单个数据与其余数据特征存在巨大差别。</p>
-
-<ol>
-<li>上下文异常</li>
-</ol>
-
-<p>统计指标上显示无异常，但是放在上下文环境中呈现异常。</p>
-
-<ol>
-<li>集体异常</li>
-</ol>
-
-<p>一个数据集合相对于整个集合是异常的。</p>
 
 <a class="post-dummy-target" id="训练模式"></a><h2>训练模式：</h2>
 
 <ol>
-<li>有监督</li>
+<li><strong>有监督</strong><br>
+存在问题：样本严重不平衡。一般异常检测样本远少于正常样本数量。其次，很难获得准确的并且具有代表性的异常样本类型，正负样本边界模糊，真值本身存在一些问题。</li>
+<li><strong>半监督</strong><br>
+所有训练数据均为正常样本，用该模型检测异常样本。不常用。很难找到全覆盖所有异常的数据集。</li>
+<li><strong>无监督</strong><br>
+广泛使用。</li>
 </ol>
 
-<p>存在问题：样本严重不平衡。一般异常检测样本远少于正常样本数量。其次，很难获得准确的并且具有代表性的异常样本类型，正负样本边界模糊，真值本身存在一些问题。</p>
-
-<ol>
-<li>半监督</li>
-</ol>
-
-<p>所有训练数据均为正常样本，用该模型检测异常样本。不常用。很难找到全覆盖所有异常的数据集。</p>
-
-<ol>
-<li>无监督</li>
-</ol>
-
-<p>广泛使用。</p>
+<hr />
 
 <a class="post-dummy-target" id="异常检测方法"></a><h2>异常检测方法</h2>
 
@@ -377,15 +364,25 @@
 
 <a class="post-dummy-target" id="基于密度"></a><h3>基于密度</h3>
 
-<p>LOF(local outlier factor)(将密度大大低于邻居的样本视为异常值)，BIRCH，DBSCAN（如果数据点的局部区域内的数据点的数量低于阈值，则将其定义为异常）</p>
+<ul>
+<li>LOF(local outlier factor)(将密度大大低于邻居的样本视为异常值)</li>
+<li>BIRCH</li>
+<li>DBSCAN（如果数据点的局部区域内的数据点的数量低于阈值，则将其定义为异常）</li>
+</ul>
 
 <a class="post-dummy-target" id="专门异常点检测"></a><h3>专门异常点检测</h3>
 
-<p>隔离森林（较大高度平均值为异常值），one-class SVM（与超球体中心的距离大于r为新奇）</p>
+<ul>
+<li>隔离森林（较大高度平均值为异常值）</li>
+<li>one-class SVM（与超球体中心的距离大于r为新奇）</li>
+</ul>
 
 <a class="post-dummy-target" id="基于偏差"></a><h3>基于偏差</h3>
 
-<p>PCA/自编码器（具有高重建误差的数据点被定义为异常），隐马尔可夫模型（HMM）</p>
+<ul>
+<li>PCA/自编码器（具有高重建误差的数据点被定义为异常）</li>
+<li>隐马尔可夫模型（HMM）</li>
+</ul>
 
 <a class="post-dummy-target" id="深度学习"></a><h3>深度学习</h3>
 
@@ -393,6 +390,8 @@
 <li>Auto-Encoder</li>
 <li>GAN</li>
 </ul>
+
+<hr />
 
 <a class="post-dummy-target" id="实操方法"></a><h2>实操方法</h2>
 
@@ -422,7 +421,7 @@
 
 <ul>
 <li>Maximum Likelihood(最大似然法)
-Scatter Plot Density $f_\theta(x)$
+Scatter Plot Density $f_\theta(x))$
 
 <ul>
 <li>Assuming the data points is sampled from aprobability density function $f_\theta(x)$</li>

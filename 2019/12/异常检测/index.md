@@ -31,31 +31,22 @@
 - 异常检测根具体的应用场景紧密相关，算法检测出的“异常”不一定是我们实际想要的，比如，在识别虚假交易时，异常的交易未必就是虚假的交易。所以，在特征选择时，可能需要过滤不太相关的特征，以免识别出一些不太相关的“异常”。
 
 ## 类型：
-1. 点异常
-
+1. **点异常**<br>
 单个数据与其余数据特征存在巨大差别。
-
-2. 上下文异常
-
+2. **上下文异常**<br>
 统计指标上显示无异常，但是放在上下文环境中呈现异常。
-
-3. 集体异常
-
+3. **集体异常**<br>
 一个数据集合相对于整个集合是异常的。
 
 ## 训练模式：
-1. 有监督
-
+1. **有监督**<br>
 存在问题：样本严重不平衡。一般异常检测样本远少于正常样本数量。其次，很难获得准确的并且具有代表性的异常样本类型，正负样本边界模糊，真值本身存在一些问题。
-
-2. 半监督
-
+2. **半监督**<br>
 所有训练数据均为正常样本，用该模型检测异常样本。不常用。很难找到全覆盖所有异常的数据集。
-
-3. 无监督
-
+3. **无监督**<br>
 广泛使用。
 
+---
 ## 异常检测方法
 ### 1. 基于分类的异常检测
 
@@ -108,18 +99,23 @@
 **缺点**:依赖于特定分布，但在很多场景下，假设是不成立的。
 
 ### 基于密度
-LOF(local outlier factor)(将密度大大低于邻居的样本视为异常值)，BIRCH，DBSCAN（如果数据点的局部区域内的数据点的数量低于阈值，则将其定义为异常）
+* LOF(local outlier factor)(将密度大大低于邻居的样本视为异常值)
+* BIRCH
+* DBSCAN（如果数据点的局部区域内的数据点的数量低于阈值，则将其定义为异常）
 
 ### 专门异常点检测
-隔离森林（较大高度平均值为异常值），one-class SVM（与超球体中心的距离大于r为新奇）
+* 隔离森林（较大高度平均值为异常值）
+* one-class SVM（与超球体中心的距离大于r为新奇）
 
 ### 基于偏差
-PCA/自编码器（具有高重建误差的数据点被定义为异常），隐马尔可夫模型（HMM）
+* PCA/自编码器（具有高重建误差的数据点被定义为异常）
+* 隐马尔可夫模型（HMM）
 
 ### 深度学习
 * Auto-Encoder
 * GAN
 
+---
 ## 实操方法
 ### 有监督
 * Classifier With Confidence Score(以$\lambda$为阈值)
@@ -132,8 +128,8 @@ PCA/自编码器（具有高重建误差的数据点被定义为异常），隐�
   * *Mark Liger, Shachar Fleishman, Novelty Detection with GAN, arxiv, 2018*
 
 ### 无监督
-* Maximum Likelihood(最大似然法) 
-  Scatter Plot Density $f_\theta(x)$
+* Maximum Likelihood(最大似然法)
+  Scatter Plot Density $f_\theta(x))$
   * Assuming the data points is sampled from aprobability density function $f_\theta(x)$
     * $\theta$ determines the shape of $f_\theta(x)$
     * $\theta$ is unknown. to be found from data
