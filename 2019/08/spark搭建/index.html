@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Spark搭建 | KevinQiu`s Blog</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noodp" />
+<meta name="Description" content="Spark搭建过程 笔记">
+<link rel="next" href="https://qiubinyang.github.io/2019/08/hadoop%E6%90%AD%E5%BB%BA/" />
+<link rel="canonical" href="https://qiubinyang.github.io/2019/08/spark%E6%90%AD%E5%BB%BA/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Spark搭建"/>
+<meta name="twitter:description" content="Spark搭建过程 笔记"/>
+<script type="application/ld+json">
+    {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Spark搭建",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https:\/\/qiubinyang.github.io\/2019\/08\/spark%E6%90%AD%E5%BB%BA\/"
+    },
+    
+        "image": {
+            "@type": "ImageObject",
+            "url": "https:\/\/qiubinyang.github.io\/cover.png",
+            "width":  800 ,
+            "height":  600 
+        },
+    
+    "genre": "posts",
+    
+        "keywords": "基础知识笔记, Spark",
+    
+    "wordcount":  317 ,
+    "url": "https:\/\/qiubinyang.github.io\/2019\/08\/spark%E6%90%AD%E5%BB%BA\/",
+    
+        "datePublished": "2019-08-04T22:49:56\x2b08:00",
+    
+    
+        "dateModified": "2019-08-17T22:41:56\x2b08:00",
+    
+    
+        "license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.",
+    
+    
+        "publisher": {
+            "@type": "Organization",
+            "name": "XXXX",
+            "logo": {
+            "@type": "ImageObject",
+            "url": "https:\/\/qiubinyang.github.io\/logo.png",
+            "width":  127 ,
+            "height":  40 
+            }
+        },
+    
+    
+    "description": "Spark搭建过程 笔记"
+    }
+    </script>
+<link rel="stylesheet" href="/css/style.min.css">
+<link rel="stylesheet" href="/css/lib/fontawesome-free/all.min.min.css">
+
+<link rel="stylesheet" href="/css/lib/animate/animate.min.min.css">
+
+    </head>
+    <body>
+        <script>
+            window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            window.isDark && document.body.classList.add('dark-theme');
+        </script>
+        <div class="wrapper">
+            <nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-header">
+            <a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a>
+        </div>
+        <div class="navbar-menu">
+            
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/posts" title="">文章</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/tags" title="">标签</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/categories" title="">目录</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/about" title="">关于</a>
+            
+            <a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a>
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile">
+     <div class="navbar-container">
+        <div class="navbar-header">
+            <div><a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a><a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a></div>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="navbar-menu" id="mobile-menu">
+            
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/posts" title="">文章</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/tags" title="">标签</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/categories" title="">目录</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/about" title="">关于</a>
+            
+        </div>
+    </div>
+</nav><main class="main">
+                <div class="container">
+                    
+    
+    
+    
+
+    <article class="post-warp">
+        <h1 class="post-title animated flipInX">Spark搭建</h1>
+
+        <div class="post-meta">
+            <div class="post-meta-main">
+                <a class="author" href="https://qiubinyang.github.io/" rel="author"><i class="fas fa-user-circle fa-fw"></i>KevinQiu&nbsp;</a>
+                <span class="post-category">
+                        收录于
+                        <i class="far fa-folder fa-fw"></i><a href="https://qiubinyang.github.io/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/">大数据技术</a>
+                            
+                    </span>
+            </div>
+            <div class="post-meta-other">
+                <i class="far fa-calendar-alt fa-fw"></i><time datetime=2019-08-04>2019-08-04</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>约 317 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>预计阅读 1 分钟&nbsp;</div>
+        </div>
+
+        
+
+        <div class="post-toc" id="post-toc">
+                <h2 class="post-toc-title">目录</h2>
+                <div class="post-toc-content">
+                    
+                </div>
+            </div>
+            <div class="post-toc-mobile" id="post-toc-mobile">
+                <details>
+                    <summary><div class="post-toc-title"><span>目录</span><span><i class="details icon fas fa-angle-down"></i></span></div></summary>
+                    <div class="post-toc-content">
+                        
+                        
+                        
+                    </div>
+                </details>
+            </div>
+
+        <div class="post-content">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <ol>
+<li>下载<a href="http://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-2.3.4/spark-2.3.4-bin-hadoop2.7.tgz">http://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-2.3.4/spark-2.3.4-bin-hadoop2.7.tgz</a></li>
+<li>解压</li>
+<li>bin目录添加环境变量</li>
+
+<li><p>修改 spark-env.sh 和 slaves</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">cp spark-env.sh.template spark-env.sh
+vim spark-env.sh</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-yml" data-lang="yml"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yml" data-lang="yml"><span class="c">#配置如下</span><span class="w">
+</span><span class="w"></span><span class="c">#hadoop的配置文件路径，spark会去读取配置文件，如果不在同一个集群，需拷贝配置文件到spark的节点，让spark能够读到</span><span class="w">
+</span><span class="w"></span>HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop<span class="w">
+</span><span class="w"></span><span class="c">#本机ip</span><span class="w">
+</span><span class="w"></span>SPARK_LOCAL_IP=master<span class="w">
+</span><span class="w"></span>JAVA_HOME=/opt/java</code></pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>复制给子节点</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">scp -r /opt/spark root@slave1:/opt
+scp -r /opt/spark root@slave2:/opt</pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">bin/spark-submit \
+--class org.apache.spark.examples.SparkPi \
+--master spark://master:7077 \
+--executor-memory 1G \
+--total-executor-cores 2 \
+examples/jars/spark-examples_2.11-2.3.4.jar \
+20</pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+
+        </div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>本文于 2019-08-17 更新</span>
+            </div>
+            <div class="post-info-license">
+                
+            </div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md">
+                
+                    
+                        <span><a class="link-to-markdown" href="https://qiubinyang.github.io/2019/08/spark%E6%90%AD%E5%BB%BA/index.md" target="_blank">阅读原始文档</a></span>
+                    
+                
+            </div>
+            <div class="post-info-share">
+                
+                    <span>
+    
+        <a href="//twitter.com/share?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f08%2fspark%25E6%2590%25AD%25E5%25BB%25BA%2f&amp;text=Spark%e6%90%ad%e5%bb%ba&amp;via=" target="_blank" title="Share on Twitter">
+            <i class="fab fa-twitter fa-fw"></i>
+        </a>
+    
+    
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fqiubinyang.github.io%2f2019%2f08%2fspark%25E6%2590%25AD%25E5%25BB%25BA%2f" target="_blank" title="Share on Facebook">
+            <i class="fab fa-facebook-square fa-fw"></i>
+        </a>
+    
+    
+        <a href="//reddit.com/submit?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f08%2fspark%25E6%2590%25AD%25E5%25BB%25BA%2f&amp;title=Spark%e6%90%ad%e5%bb%ba" target="_blank" title="Share on Reddit">
+            <i class="fab fa-reddit fa-fw"></i>
+        </a>
+    
+    
+    
+    
+    
+    
+    
+    
+        <a href="//service.weibo.com/share/share.php?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f08%2fspark%25E6%2590%25AD%25E5%25BB%25BA%2f&amp;appkey=&amp;title=Spark%e6%90%ad%e5%bb%ba" target="_blank" title="Share on Weibo">
+            <i class="fab fa-weibo fa-fw"></i>
+        </a>
+    
+</span>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section>
+            
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/"><i class="fas fa-tag fa-fw"></i>基础知识笔记</a>
+                    </span>
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/spark/"><i class="fas fa-tag fa-fw"></i>Spark</a>
+                    </span>
+                
+            
+        </section>
+        <section>
+            <span><a href="javascript:window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="https://qiubinyang.github.io/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+        
+            <a href="https://qiubinyang.github.io/2019/08/hadoop%E6%90%AD%E5%BB%BA/" class="next" rel="next" title="Hadoop环境搭建">Hadoop环境搭建<i class="fas fa-angle-right fa-fw"></i></a>
+        
+    </div>
+</div>
+
+        <div class="post-comment">
+            
+        </div>
+    </article></div>
+            </main>
+            <footer class="footer">
+    <div class="copyright">
+        <div class="copyright-line">
+            由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+        <div class="copyright-line">
+            <i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://qiubinyang.github.io/">KevinQiu</a></span><span class="license">&nbsp;|&nbsp;<a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+    </div>
+</footer>
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+<script src="/js/lib/jquery/jquery.slim.min.min.js"></script>
+<script src="/js/lib/lazysizes/lazysizes.min.min.js"></script>
+<script src="/js/lib/smooth-scroll/smooth-scroll.polyfills.min.min.js"></script><script>window.scroll = new SmoothScroll('[data-scroll]', {speed: 300, speedAsDuration: true});</script>
+
+
+    
+    
+        
+    
+
+    
+
+    
+        <link rel="stylesheet" href="/css/lib/katex/katex.min.min.css"><script src="/js/lib/katex/katex.min.min.js"></script><script defer src="/js/lib/katex/auto-render.min.min.js" onload="renderMathInElement(document.body);"></script>
+    
+
+    
+
+    
+
+
+
+
+
+
+<script src="/js/blog.min.js"></script>
+
+
+    
+</div>
+        <a href="#" class="dynamic-to-top" id="dynamic-to-top" data-scroll><span>&nbsp;</span></a>
+    </body>
+</html>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Spark on KevinQiu`s Blog</title>
+    <link>https://qiubinyang.github.io/tags/spark/</link>
+    <description>Recent content in Spark on KevinQiu`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sun, 04 Aug 2019 22:49:56 +0800</lastBuildDate>
+    
+	<atom:link href="https://qiubinyang.github.io/tags/spark/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Spark搭建</title>
+      <link>https://qiubinyang.github.io/2019/08/spark%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Sun, 04 Aug 2019 22:49:56 +0800</pubDate>
+      
+      <guid>https://qiubinyang.github.io/2019/08/spark%E6%90%AD%E5%BB%BA/</guid>
+      <description>下载http://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-2.3.4/spark-2</description>
+    </item>
+    
+  </channel>
+</rss>

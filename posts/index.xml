@@ -34,5 +34,23 @@
       <description>Hadoop 组成： - 文件系统 HDFS - 并行计算框架 MapReduce 一、HDFS 1.设计架构 块(Block) 存储和处理的逻辑单元 默认64MB NameNode 管理节点 存放文件元数据 文件与数</description>
     </item>
     
+    <item>
+      <title>Hadoop环境搭建</title>
+      <link>https://qiubinyang.github.io/2019/08/hadoop%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Sun, 04 Aug 2019 22:49:56 +0800</pubDate>
+      
+      <guid>https://qiubinyang.github.io/2019/08/hadoop%E6%90%AD%E5%BB%BA/</guid>
+      <description>完全分布式搭建，搭建好master之后，直接把master的hadoop文件夹发送给slaves就可以了 伪分布式搭建 准备Linux环境 安装虚</description>
+    </item>
+    
+    <item>
+      <title>Spark搭建</title>
+      <link>https://qiubinyang.github.io/2019/08/spark%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Sun, 04 Aug 2019 22:49:56 +0800</pubDate>
+      
+      <guid>https://qiubinyang.github.io/2019/08/spark%E6%90%AD%E5%BB%BA/</guid>
+      <description>下载http://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-2.3.4/spark-2</description>
+    </item>
+    
   </channel>
 </rss>

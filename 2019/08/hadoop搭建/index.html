@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Hadoop环境搭建 | KevinQiu`s Blog</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noodp" />
+<meta name="Description" content="伪分布式和分布式的搭建">
+<link rel="prev" href="https://qiubinyang.github.io/2019/08/spark%E6%90%AD%E5%BB%BA/" />
+<link rel="next" href="https://qiubinyang.github.io/2019/08/hadoop%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" />
+<link rel="canonical" href="https://qiubinyang.github.io/2019/08/hadoop%E6%90%AD%E5%BB%BA/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Hadoop环境搭建"/>
+<meta name="twitter:description" content="伪分布式和分布式的搭建"/>
+<script type="application/ld+json">
+    {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Hadoop环境搭建",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https:\/\/qiubinyang.github.io\/2019\/08\/hadoop%E6%90%AD%E5%BB%BA\/"
+    },
+    
+        "image": {
+            "@type": "ImageObject",
+            "url": "https:\/\/qiubinyang.github.io\/cover.png",
+            "width":  800 ,
+            "height":  600 
+        },
+    
+    "genre": "posts",
+    
+        "keywords": "基础知识笔记, Hadoop",
+    
+    "wordcount":  1327 ,
+    "url": "https:\/\/qiubinyang.github.io\/2019\/08\/hadoop%E6%90%AD%E5%BB%BA\/",
+    
+        "datePublished": "2019-08-04T22:49:56\x2b08:00",
+    
+    
+        "dateModified": "2019-08-17T22:41:56\x2b08:00",
+    
+    
+        "license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.",
+    
+    
+        "publisher": {
+            "@type": "Organization",
+            "name": "XXXX",
+            "logo": {
+            "@type": "ImageObject",
+            "url": "https:\/\/qiubinyang.github.io\/logo.png",
+            "width":  127 ,
+            "height":  40 
+            }
+        },
+    
+    
+    "description": "伪分布式和分布式的搭建"
+    }
+    </script>
+<link rel="stylesheet" href="/css/style.min.css">
+<link rel="stylesheet" href="/css/lib/fontawesome-free/all.min.min.css">
+
+<link rel="stylesheet" href="/css/lib/animate/animate.min.min.css">
+
+    </head>
+    <body>
+        <script>
+            window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            window.isDark && document.body.classList.add('dark-theme');
+        </script>
+        <div class="wrapper">
+            <nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-header">
+            <a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a>
+        </div>
+        <div class="navbar-menu">
+            
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/posts" title="">文章</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/tags" title="">标签</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/categories" title="">目录</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/about" title="">关于</a>
+            
+            <a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a>
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile">
+     <div class="navbar-container">
+        <div class="navbar-header">
+            <div><a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a><a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a></div>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="navbar-menu" id="mobile-menu">
+            
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/posts" title="">文章</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/tags" title="">标签</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/categories" title="">目录</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/about" title="">关于</a>
+            
+        </div>
+    </div>
+</nav><main class="main">
+                <div class="container">
+                    
+    
+    
+    
+
+    <article class="post-warp">
+        <h1 class="post-title animated flipInX">Hadoop环境搭建</h1>
+
+        <div class="post-meta">
+            <div class="post-meta-main">
+                <a class="author" href="https://qiubinyang.github.io/" rel="author"><i class="fas fa-user-circle fa-fw"></i>KevinQiu&nbsp;</a>
+                <span class="post-category">
+                        收录于
+                        <i class="far fa-folder fa-fw"></i><a href="https://qiubinyang.github.io/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/">大数据技术</a>
+                            
+                    </span>
+            </div>
+            <div class="post-meta-other">
+                <i class="far fa-calendar-alt fa-fw"></i><time datetime=2019-08-04>2019-08-04</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>约 1327 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>预计阅读 3 分钟&nbsp;</div>
+        </div>
+
+        
+
+        <div class="post-toc" id="post-toc">
+                <h2 class="post-toc-title">目录</h2>
+                <div class="post-toc-content">
+                    <nav id="TableOfContents">
+<ul>
+<li><a href="#伪分布式搭建">伪分布式搭建</a>
+<ul>
+<li><a href="#详细配置">详细配置</a></li>
+<li><a href="#java安装">Java安装</a></li>
+<li><a href="#运行">运行</a></li>
+</ul></li>
+<li><a href="#分布式集群搭建">分布式集群搭建</a>
+<ul>
+<li><a href="#与伪分布配置的不同">与伪分布配置的不同</a></li>
+</ul></li>
+</ul>
+</nav>
+                </div>
+            </div>
+            <div class="post-toc-mobile" id="post-toc-mobile">
+                <details>
+                    <summary><div class="post-toc-title"><span>目录</span><span><i class="details icon fas fa-angle-down"></i></span></div></summary>
+                    <div class="post-toc-content">
+                        
+                        
+                        <nav id="TableOfContentsMobile">
+<ul>
+<li><a href="#伪分布式搭建">伪分布式搭建</a>
+<ul>
+<li><a href="#详细配置">详细配置</a></li>
+<li><a href="#java安装">Java安装</a></li>
+<li><a href="#运行">运行</a></li>
+</ul></li>
+<li><a href="#分布式集群搭建">分布式集群搭建</a>
+<ul>
+<li><a href="#与伪分布配置的不同">与伪分布配置的不同</a></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                </details>
+            </div>
+
+        <div class="post-content">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+<p><span style="color: red; font-size: 20px">完全分布式搭建，搭建好master之后，直接把master的hadoop文件夹发送给slaves就可以了</span></p>
+
+<a class="post-dummy-target" id="伪分布式搭建"></a><h1>伪分布式搭建</h1>
+
+<ol>
+<li>准备Linux环境
+
+<ol>
+<li>安装虚拟机master、slave1、slave2</li>
+<li><a href="#java安装">java安装</a></li>
+<li>ip修改</li>
+<li>hostname修改</li>
+<li>hosts：/etc/hosts</li>
+<li>iptables关闭</li>
+<li>chkconfig</li>
+<li>ssh免密登录</li>
+</ol></li>
+<li>下载Hadoop
+
+<ol>
+<li>下载上传</li>
+<li>解压</li>
+<li>添加环境变量</li>
+<li>修改配置文件
+
+<ol>
+<li><a href="#core-site">core-site.xml</a></li>
+<li><a href="#hdfs-site">hdfs-site.xml</a></li>
+<li><a href="#yarn-site">yarn-site.xml</a></li>
+<li><a href="#mapred-site">mapred-site.xml</a></li>
+<li><a href="#hadoop-env">hadoop-env.sh</a></li>
+<li><a href="#yarn-env">yarn-env.sh</a></li>
+<li>slaves文件</li>
+</ol></li>
+</ol></li>
+</ol>
+
+<a class="post-dummy-target" id="详细配置"></a><h2>详细配置</h2>
+
+<blockquote>
+<p>安装Linux软件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">yum install -y 
+                vim
+                net-tools<span class="o">(</span>ifconfig netstate route<span class="o">)</span>
+                bash-completion<span class="o">(</span>自动补全<span class="o">)</span></code></pre></td></tr></table>
+</div>
+</div></blockquote>
+
+<table>
+<thead>
+<tr>
+<th>软件名</th>
+<th>根目录</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>java</td>
+<td>/opt/java</td>
+</tr>
+
+<tr>
+<td>hadoop</td>
+<td>/opt/hadoop</td>
+</tr>
+
+<tr>
+<td>zookeeper</td>
+<td>/opt/zookeeper</td>
+</tr>
+
+<tr>
+<td>kafka</td>
+<td>/opt/kafka</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+<p>hostname
+- master
+- slave1
+- slave2</p>
+
+<p>ip
+- 192.168.100.100
+- 192.168.100.101
+- 192.168.100.102</p>
+
+<p>改ip地址</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">nmcli connection ens33 ipv4.address <span class="m">192</span>.168.100.100
+nmcli connection ens33 ipv4.gateway <span class="m">192</span>.168.100.2
+nmcli connection ens33 ipv4.dns <span class="m">192</span>.168.100.2
+nmcli connection ens33 ipv4.method manual
+
+<span class="c1"># 或</span>
+vim /etc/sysconfig/network-scripts/ifcfg-ens33
+
+systemstl restart network</code></pre></td></tr></table>
+</div>
+</div>
+<p>修改hosts</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">vim /etc/hosts</code></pre></td></tr></table>
+</div>
+</div>
+<p>填入</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">192.168.100.100 master
+192.168.100.101 slave1
+192.168.100.102 slave2</pre></td></tr></table>
+</div>
+</div>
+<p>ssh无密码登录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">ssh-keygen -t rsa
+
+cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
+
+chmod <span class="m">600</span>  ~/.ssh/authorized_keys</code></pre></td></tr></table>
+</div>
+</div>
+<p>全部采用默认值，第一次会输入yes，后面就是无密码登录了</p>
+
+<p>关闭防火墙和selinux</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">systemctl start firewalld.service#启动firewall
+
+systemctl stop firewalld.service#停止firewall
+
+systemctl disable firewalld.service</code></pre></td></tr></table>
+</div>
+</div>
+<p>添加环境变量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">echo &#39;export HADOOP_HOME=/opt/hadoop/bin:/opt/hadoop/sbin&#39; &gt;&gt; /etc/profile
+
+echo &#39;export PATH=$PATH:$HADOOP_HOME&#39; &gt;&gt; /etc/profile</pre></td></tr></table>
+</div>
+</div>
+<p><b id="hadoop-site">hadoop-env.sh</b></p>
+</blockquote>
+
+<p>export JAVA_HOME=java安装目录(/opt/jdk_1.8)<br />
+export HADOOP_LOG_DIR=日志目录(创建一个/opt/hadoop_repo/logs/hadoop)</p>
+
+<blockquote>
+<p><b id="yarn-site">yarn-env.sh</b></p>
+</blockquote>
+
+<p>export JAVA_HOME=java目录<br />
+export YARN_LOG_DIR=日志目录(创建一个/opt/hadoop_repo/logs/yarn)</p>
+
+<blockquote>
+<p><b id="core-site">core-site.xml</b></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;configuration&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+   <span class="nt">&lt;name&gt;</span>hadoop.tmp.dir<span class="nt">&lt;/name&gt;</span>
+   <span class="nt">&lt;value&gt;</span>/opt/hadoop_repo<span class="nt">&lt;/value&gt;</span>
+   <span class="nt">&lt;description&gt;</span>A base for other temporary directories.<span class="nt">&lt;/description&gt;</span>
+ <span class="nt">&lt;/property&gt;</span>
+ <span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>io.file.buffer.size<span class="nt">&lt;/name&gt;</span>
+   <span class="nt">&lt;value&gt;</span>131072<span class="nt">&lt;/value&gt;</span>
+ <span class="nt">&lt;/property&gt;</span>
+ <span class="nt">&lt;property&gt;</span>
+   <span class="nt">&lt;name&gt;</span>fs.defaultFS<span class="nt">&lt;/name&gt;</span>
+   <span class="nt">&lt;value&gt;</span>hdfs://master:9000<span class="nt">&lt;/value&gt;</span>
+   <span class="nt">&lt;description&gt;</span>hdfs://hostname:port_number<span class="nt">&lt;/description&gt;</span>
+ <span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><b id="hdfs-site">hdfs-site.xml</b></p>
+</blockquote>
+
+<p>namenode和datanode的配置可以不用在这儿写，第一次启动hadoop时格式化操作会在repo中自动生成他们的工作文件夹。只配置一个replication就行。replication的数量指的是副本数量，<strong>因为是伪分布式，没有三个副本，所以修改为1。</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;configuration&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+    <span class="nt">&lt;name&gt;</span>dfs.replication<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;value&gt;</span>1<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+  <span class="c">&lt;!-- &lt;property&gt;
+</span><span class="c">    &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;
+</span><span class="c">    &lt;value&gt;file:/home/hadoop/hadoop-2.7.3/hdfs/name&lt;/value&gt;
+</span><span class="c">    &lt;final&gt;true&lt;/final&gt;
+</span><span class="c">  &lt;/property&gt;
+</span><span class="c">  &lt;property&gt;
+</span><span class="c">    &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;
+</span><span class="c">    &lt;value&gt;file:/home/hadoop/hadoop-2.7.3/hdfs/data&lt;/value&gt;
+</span><span class="c">    &lt;final&gt;true&lt;/final&gt;
+</span><span class="c">  &lt;/property&gt;
+</span><span class="c">  &lt;property&gt;
+</span><span class="c">    &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;
+</span><span class="c">    &lt;value&gt;master:9001&lt;/value&gt;
+</span><span class="c">  &lt;/property&gt;
+</span><span class="c">  &lt;property&gt;
+</span><span class="c">    &lt;name&gt;dfs.webhdfs.enabled&lt;/name&gt;
+</span><span class="c">    &lt;value&gt;true&lt;/value&gt;
+</span><span class="c">  &lt;/property&gt;
+</span><span class="c">  &lt;property&gt;
+</span><span class="c">    &lt;name&gt;dfs.permissions&lt;/name&gt;
+</span><span class="c">    &lt;value&gt;false&lt;/value&gt;
+</span><span class="c">  &lt;/property&gt; --&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span></code></pre></td></tr></table>
+</div>
+</div>
+<blockquote>
+<p><b id="mapred-site">mapred-site.xml</b></p>
+</blockquote>
+
+<p>这里需要把<code>mapred-site.xml.template</code>改成<code>mapred-site.xml</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">cp mapred-site.xml.template mapred-site.xml</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;property&gt;</span>
+   <span class="nt">&lt;name&gt;</span>mapreduce.framework.name<span class="nt">&lt;/name&gt;</span>
+   <span class="nt">&lt;value&gt;</span>yarn<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span></code></pre></td></tr></table>
+</div>
+</div>
+<blockquote>
+<p><b id="yarn-site">yarn-site.xml</b></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.nodemanager.aux-services<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>mapreduce_shuffle<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>slaves文件</p>
+</blockquote>
+
+<p>伪分布时保留为localhost就行</p>
+
+<hr />
+
+<a class="post-dummy-target" id="java安装"></a><h2>Java安装</h2>
+
+<ol>
+<li>tar -zxvf  jdk1.8.0_161.tar.gz</li>
+<li>配置环境变量
+
+<ul>
+<li>java环境变量可以在/etc/profile.d中添加jdk.sh</li>
+<li>或直接在/etc/profile里面写</li>
+<li>直接source /etc/profile就行</li>
+</ul></li>
+</ol>
+
+<p>如果是用jdk.sh这种配置法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">#!bin/bash
+JAVA_HOME=/opt/java/
+export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH</pre></td></tr></table>
+</div>
+</div>
+<a class="post-dummy-target" id="运行"></a><h2>运行</h2>
+
+<blockquote>
+<p>第一次运行需格式化</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">hadoop namenode -format</pre></td></tr></table>
+</div>
+</div></blockquote>
+
+<a class="post-dummy-target" id="分布式集群搭建"></a><h1>分布式集群搭建</h1>
+
+<p>比如这里规划：
+- master
+- slave1
+- slave2</p>
+
+<blockquote>
+<blockquote>
+<blockquote>
+<p>强调：先配置maser，然后直接把hadoop文件夹发送给slaves就行了。</p>
+</blockquote>
+</blockquote>
+
+<p>注意：针对免密登录，不仅要各自能够免密登录自己，还需配置<strong>主节点</strong>可以免密登录从节点。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">scp ~/.ssh/id_rsa.pub hadoop@slave1:~/
+
+ssh slave1
+
+cat ~/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
+
+chmod 600  ~/.ssh/authorized_keys
+
+exit</pre></td></tr></table>
+</div>
+</div>
+<blockquote>
+<p>注意：需要保证集群的各个节点时间同步。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">ntpdate -u ntp.sjtu.edu.cn</pre></td></tr></table>
+</div>
+</div></blockquote>
+</blockquote>
+
+<a class="post-dummy-target" id="与伪分布配置的不同"></a><h2>与伪分布配置的不同</h2>
+
+<blockquote>
+<p>hdfs-site.xml</p>
+</blockquote>
+
+<p>增加副本为2。
+增加参数指定在哪个机器上启动SecondaryNameNode。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;configuration&gt;</span>
+　　<span class="nt">&lt;property&gt;</span>
+　　　　<span class="nt">&lt;name&gt;</span>dfs.replication<span class="nt">&lt;/name&gt;</span>
+　　　　<span class="nt">&lt;value&gt;</span>2<span class="nt">&lt;/value&gt;</span>
+　　<span class="nt">&lt;/property&gt;</span>
+　　<span class="nt">&lt;property&gt;</span>
+　　　　<span class="nt">&lt;name&gt;</span>dfs.namenode.secondary.http-address<span class="nt">&lt;/name&gt;</span>
+　　　　<span class="nt">&lt;value&gt;</span>master:50090<span class="nt">&lt;/value&gt;</span>
+　　<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span></code></pre></td></tr></table>
+</div>
+</div>
+<blockquote>
+<p>yarn-site.xml</p>
+</blockquote>
+
+<p>指定yarn的主节点。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;configuration&gt;</span>
+　　<span class="nt">&lt;property&gt;</span>
+　　　　<span class="nt">&lt;name&gt;</span>yarn.resourcemanager.hostname<span class="nt">&lt;/name&gt;</span>
+　　　　<span class="nt">&lt;value&gt;</span>master<span class="nt">&lt;/value&gt;</span>
+　　<span class="nt">&lt;/property&gt;</span>
+　　<span class="nt">&lt;property&gt;</span>
+　　　　<span class="nt">&lt;name&gt;</span>yarn.nodemanager.aux-services<span class="nt">&lt;/name&gt;</span>
+　　　　<span class="nt">&lt;value&gt;</span>mapreduce_shuffle<span class="nt">&lt;/value&gt;</span>
+　　<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span></code></pre></td></tr></table>
+</div>
+</div>
+<blockquote>
+<p>slaves</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">slave1
+slave2</pre></td></tr></table>
+</div>
+</div></blockquote>
+
+        </div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>本文于 2019-08-17 更新</span>
+            </div>
+            <div class="post-info-license">
+                
+            </div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md">
+                
+                    
+                        <span><a class="link-to-markdown" href="https://qiubinyang.github.io/2019/08/hadoop%E6%90%AD%E5%BB%BA/index.md" target="_blank">阅读原始文档</a></span>
+                    
+                
+            </div>
+            <div class="post-info-share">
+                
+                    <span>
+    
+        <a href="//twitter.com/share?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f08%2fhadoop%25E6%2590%25AD%25E5%25BB%25BA%2f&amp;text=Hadoop%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba&amp;via=" target="_blank" title="Share on Twitter">
+            <i class="fab fa-twitter fa-fw"></i>
+        </a>
+    
+    
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fqiubinyang.github.io%2f2019%2f08%2fhadoop%25E6%2590%25AD%25E5%25BB%25BA%2f" target="_blank" title="Share on Facebook">
+            <i class="fab fa-facebook-square fa-fw"></i>
+        </a>
+    
+    
+        <a href="//reddit.com/submit?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f08%2fhadoop%25E6%2590%25AD%25E5%25BB%25BA%2f&amp;title=Hadoop%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba" target="_blank" title="Share on Reddit">
+            <i class="fab fa-reddit fa-fw"></i>
+        </a>
+    
+    
+    
+    
+    
+    
+    
+    
+        <a href="//service.weibo.com/share/share.php?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f08%2fhadoop%25E6%2590%25AD%25E5%25BB%25BA%2f&amp;appkey=&amp;title=Hadoop%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba" target="_blank" title="Share on Weibo">
+            <i class="fab fa-weibo fa-fw"></i>
+        </a>
+    
+</span>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section>
+            
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/"><i class="fas fa-tag fa-fw"></i>基础知识笔记</a>
+                    </span>
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/hadoop/"><i class="fas fa-tag fa-fw"></i>Hadoop</a>
+                    </span>
+                
+            
+        </section>
+        <section>
+            <span><a href="javascript:window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="https://qiubinyang.github.io/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+            <a href="https://qiubinyang.github.io/2019/08/spark%E6%90%AD%E5%BB%BA/" class="prev" rel="prev" title="Spark搭建"><i class="fas fa-angle-left fa-fw"></i>Spark搭建</a>
+        
+        
+            <a href="https://qiubinyang.github.io/2019/08/hadoop%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="next" rel="next" title="Hadoop基础知识">Hadoop基础知识<i class="fas fa-angle-right fa-fw"></i></a>
+        
+    </div>
+</div>
+
+        <div class="post-comment">
+            
+        </div>
+    </article></div>
+            </main>
+            <footer class="footer">
+    <div class="copyright">
+        <div class="copyright-line">
+            由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+        <div class="copyright-line">
+            <i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://qiubinyang.github.io/">KevinQiu</a></span><span class="license">&nbsp;|&nbsp;<a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+    </div>
+</footer>
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+<script src="/js/lib/jquery/jquery.slim.min.min.js"></script>
+<script src="/js/lib/lazysizes/lazysizes.min.min.js"></script>
+<script src="/js/lib/smooth-scroll/smooth-scroll.polyfills.min.min.js"></script><script>window.scroll = new SmoothScroll('[data-scroll]', {speed: 300, speedAsDuration: true});</script>
+
+
+    
+    
+        
+    
+
+    
+
+    
+        <link rel="stylesheet" href="/css/lib/katex/katex.min.min.css"><script src="/js/lib/katex/katex.min.min.js"></script><script defer src="/js/lib/katex/auto-render.min.min.js" onload="renderMathInElement(document.body);"></script>
+    
+
+    
+
+    
+
+
+
+
+
+
+<script src="/js/blog.min.js"></script>
+
+
+    
+</div>
+        <a href="#" class="dynamic-to-top" id="dynamic-to-top" data-scroll><span>&nbsp;</span></a>
+    </body>
+</html>
