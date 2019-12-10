@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>大数据技术 on KevinQiu`s Blog</title>
+    <link>https://qiubinyang.github.io/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/</link>
+    <description>Recent content in 大数据技术 on KevinQiu`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sun, 04 Aug 2019 22:49:56 +0800</lastBuildDate>
+    
+	<atom:link href="https://qiubinyang.github.io/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hadoop基础知识</title>
+      <link>https://qiubinyang.github.io/2019/08/hadoop%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
+      <pubDate>Sun, 04 Aug 2019 22:49:56 +0800</pubDate>
+      
+      <guid>https://qiubinyang.github.io/2019/08/hadoop%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
+      <description>Hadoop 组成： - 文件系统 HDFS - 并行计算框架 MapReduce 一、HDFS 1.设计架构 块(Block) 存储和处理的逻辑单元 默认64MB NameNode 管理节点 存放文件元数据 文件与数</description>
+    </item>
+    
+  </channel>
+</rss>

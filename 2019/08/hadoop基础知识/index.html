@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Hadoop基础知识 | KevinQiu`s Blog</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noodp" />
+<meta name="Description" content="Hadoop的相关基础知识">
+<link rel="next" href="https://qiubinyang.github.io/2019/08/basic-markdown-preview/" />
+<link rel="canonical" href="https://qiubinyang.github.io/2019/08/hadoop%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Hadoop基础知识"/>
+<meta name="twitter:description" content="Hadoop的相关基础知识"/>
+<script type="application/ld+json">
+    {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Hadoop基础知识",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https:\/\/qiubinyang.github.io\/2019\/08\/hadoop%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86\/"
+    },
+    
+        "image": {
+            "@type": "ImageObject",
+            "url": "https:\/\/qiubinyang.github.io\/cover.png",
+            "width":  800 ,
+            "height":  600 
+        },
+    
+    "genre": "posts",
+    
+        "keywords": "基础知识笔记, Hadoop",
+    
+    "wordcount":  1494 ,
+    "url": "https:\/\/qiubinyang.github.io\/2019\/08\/hadoop%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86\/",
+    
+        "datePublished": "2019-08-04T22:49:56\x2b08:00",
+    
+    
+        "dateModified": "2019-08-17T22:41:56\x2b08:00",
+    
+    
+        "license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.",
+    
+    
+        "publisher": {
+            "@type": "Organization",
+            "name": "XXXX",
+            "logo": {
+            "@type": "ImageObject",
+            "url": "https:\/\/qiubinyang.github.io\/logo.png",
+            "width":  127 ,
+            "height":  40 
+            }
+        },
+    
+    
+    "description": "Hadoop的相关基础知识"
+    }
+    </script>
+<link rel="stylesheet" href="/css/style.min.css">
+<link rel="stylesheet" href="/css/lib/fontawesome-free/all.min.min.css">
+
+<link rel="stylesheet" href="/css/lib/animate/animate.min.min.css">
+
+    </head>
+    <body>
+        <script>
+            window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            window.isDark && document.body.classList.add('dark-theme');
+        </script>
+        <div class="wrapper">
+            <nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-header">
+            <a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a>
+        </div>
+        <div class="navbar-menu">
+            
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/posts" title="">文章</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/tags" title="">标签</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/categories" title="">目录</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/about" title="">关于</a>
+            
+            <a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a>
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile">
+     <div class="navbar-container">
+        <div class="navbar-header">
+            <div><a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a><a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a></div>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="navbar-menu" id="mobile-menu">
+            
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/posts" title="">文章</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/tags" title="">标签</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/categories" title="">目录</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/about" title="">关于</a>
+            
+        </div>
+    </div>
+</nav><main class="main">
+                <div class="container">
+                    
+    
+    
+    
+
+    <article class="post-warp">
+        <h1 class="post-title animated flipInX">Hadoop基础知识</h1>
+
+        <div class="post-meta">
+            <div class="post-meta-main">
+                <a class="author" href="https://qiubinyang.github.io/" rel="author"><i class="fas fa-user-circle fa-fw"></i>KevinQiu&nbsp;</a>
+                <span class="post-category">
+                        收录于
+                        <i class="far fa-folder fa-fw"></i><a href="https://qiubinyang.github.io/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/">大数据技术</a>
+                            
+                    </span>
+            </div>
+            <div class="post-meta-other">
+                <i class="far fa-calendar-alt fa-fw"></i><time datetime=2019-08-04>2019-08-04</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>约 1494 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>预计阅读 3 分钟&nbsp;</div>
+        </div>
+
+        
+
+        <div class="post-toc" id="post-toc">
+                <h2 class="post-toc-title">目录</h2>
+                <div class="post-toc-content">
+                    <nav id="TableOfContents">
+<ul>
+<li><a href="#hadoop">Hadoop</a>
+<ul>
+<li><a href="#一-hdfs">一、HDFS</a>
+<ul>
+<li><a href="#1-设计架构">1.设计架构</a></li>
+<li><a href="#2-数据管理策略">2.数据管理策略</a></li>
+<li><a href="#3-hdfs文件读写操作">3.HDFS文件读写操作</a>
+<ul>
+<li><a href="#读取">读取</a></li>
+<li><a href="#写入">写入</a></li>
+</ul></li>
+<li><a href="#4-总结hdfs特点">4.总结HDFS特点</a></li>
+<li><a href="#5-hdfs常用操作命令">5.HDFS常用操作命令</a>
+<ul>
+<li><a href="#shell命令">Shell命令</a></li>
+<li><a href="#java命令">Java命令</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#二-mapreduce">二、MapReduce</a>
+<ul>
+<li><a href="#区分">区分</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                </div>
+            </div>
+            <div class="post-toc-mobile" id="post-toc-mobile">
+                <details>
+                    <summary><div class="post-toc-title"><span>目录</span><span><i class="details icon fas fa-angle-down"></i></span></div></summary>
+                    <div class="post-toc-content">
+                        
+                        
+                        <nav id="TableOfContentsMobile">
+<ul>
+<li><a href="#hadoop">Hadoop</a>
+<ul>
+<li><a href="#一-hdfs">一、HDFS</a>
+<ul>
+<li><a href="#1-设计架构">1.设计架构</a></li>
+<li><a href="#2-数据管理策略">2.数据管理策略</a></li>
+<li><a href="#3-hdfs文件读写操作">3.HDFS文件读写操作</a>
+<ul>
+<li><a href="#读取">读取</a></li>
+<li><a href="#写入">写入</a></li>
+</ul></li>
+<li><a href="#4-总结hdfs特点">4.总结HDFS特点</a></li>
+<li><a href="#5-hdfs常用操作命令">5.HDFS常用操作命令</a>
+<ul>
+<li><a href="#shell命令">Shell命令</a></li>
+<li><a href="#java命令">Java命令</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#二-mapreduce">二、MapReduce</a>
+<ul>
+<li><a href="#区分">区分</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                </details>
+            </div>
+
+        <div class="post-content">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+<a class="post-dummy-target" id="hadoop"></a><h1>Hadoop</h1>
+
+<p>组成：
+- 文件系统 HDFS
+- 并行计算框架 MapReduce</p>
+
+<a class="post-dummy-target" id="一-hdfs"></a><h2>一、HDFS</h2>
+
+<a class="post-dummy-target" id="1-设计架构"></a><h3>1.设计架构</h3>
+
+<ul>
+<li>块(Block)
+
+<ul>
+<li>存储和处理的逻辑单元</li>
+<li>默认64MB</li>
+</ul></li>
+<li>NameNode
+
+<ul>
+<li>管理节点</li>
+<li>存放文件元数据</li>
+<li>文件与数据块的映射表</li>
+<li>数据块与数据节点的映射表</li>
+</ul></li>
+<li>DataNode
+
+<ul>
+<li>工作节点</li>
+<li>存放具体数据</li>
+</ul></li>
+</ul>
+
+<p><figure><img src=/images/loading.svg data-sizes=auto data-src=https://raw.githubusercontent.com/qiubinyang/qiubinyang.github.io/imgs/hdfs%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.png alt= class=lazyload><figcaption class=image-caption></figcaption></figure></p>
+
+<a class="post-dummy-target" id="2-数据管理策略"></a><h3>2.数据管理策略</h3>
+
+<ol>
+<li><p>高可靠：</p>
+
+<ul>
+<li>每个数据块3个副本，分布在两个机架内的三个节点上。</li>
+</ul></li>
+
+<li><p>心跳检测
+<figure><img src=/images/loading.svg data-sizes=auto data-src=https://raw.githubusercontent.com/qiubinyang/qiubinyang.github.io/imgs/%E5%BF%83%E8%B7%B3%E6%A3%80%E6%B5%8B.png alt= class=lazyload><figcaption class=image-caption></figcaption></figure></p></li>
+
+<li><p>二级NameNode</p></li>
+
+<li><p>定期同步NameNode中的元数据映像文件和修改日志，NameNode发生故障时，备胎转正。</p></li>
+
+<li><p>只做备份，不参与NameNode操作</p></li>
+
+<li><p>HDFS Federation</p></li>
+
+<li><p>我们知道NameNode的内存会制约文件数量，HDFS Federation提供了一种横向扩展NameNode的方式。在Federation模式中，每个NameNode管理命名空间的一部分，例如一个NameNode管理/user目录下的文件， 另一个NameNode管理/share目录下的文件。</p></li>
+
+<li><p>每个NameNode管理一个namespace volumn，所有volumn构成文件系统的元数据。每个NameNode同时维护一个Block Pool，保存Block的节点映射等信息。各NameNode之间是独立的，一个节点的失败不会导致其他节点管理的文件不可用。</p></li>
+
+<li><p>客户端使用mount table将文件路径映射到NameNode。mount table是在Namenode群组之上封装了一层，这一层也是一个Hadoop文件系统的实现，通过viewfs:协议访问。</p></li>
+
+<li><p>HDFS HA(High Availability高可用性)</p></li>
+</ol>
+
+<p>启动新的Namenode之后，需要重新配置客户端和DataNode的NameNode信息。另外重启耗时一般比较久，稍具规模的集群重启经常需要几十分钟甚至数小时，造成重启耗时的原因大致有： 
+- 元数据镜像文件载入到内存耗时较长。 
+- 需要重放edit log 
+- 需要收到来自DataNode的状态报告并且满足条件后才能离开安全模式提供写服务。
+- HA方案：
+  - 采用HA的HDFS集群配置两个NameNode，分别处于Active和Standby状态。当Active NameNode故障之后，Standby接过责任继续提供服务，用户没有明显的中断感觉。一般耗时在几十秒到数分钟。</p>
+
+<ol>
+<li>HDFS为每一个用户创建了一个回收站
+
+<ol>
+<li>在/usr/用户名/.Trash/中</li>
+<li>要使用需要在core-site.xml中配置</li>
+</ol></li>
+</ol>
+
+<a class="post-dummy-target" id="3-hdfs文件读写操作"></a><h3>3.HDFS文件读写操作</h3>
+
+<a class="post-dummy-target" id="读取"></a><h4>读取</h4>
+
+<p><figure><img src=/images/loading.svg data-sizes=auto data-src=https://raw.githubusercontent.com/qiubinyang/qiubinyang.github.io/imgs/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96.png alt= class=lazyload><figcaption class=image-caption></figcaption></figure></p>
+
+<a class="post-dummy-target" id="写入"></a><h4>写入</h4>
+
+<p><figure><img src=/images/loading.svg data-sizes=auto data-src=https://raw.githubusercontent.com/qiubinyang/qiubinyang.github.io/imgs/%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5.png alt= class=lazyload><figcaption class=image-caption></figcaption></figure></p>
+
+<a class="post-dummy-target" id="4-总结hdfs特点"></a><h3>4.总结HDFS特点</h3>
+
+<ol>
+<li>数据冗余，硬件容错</li>
+<li>流式的数据访问
+
+<ol>
+<li>一次写入，多次读取</li>
+<li>如果出错需要修改，不能直接修改，需要删除后重新写入</li>
+</ol></li>
+<li>适合存储大文件
+
+<ol>
+<li>储存小文件，仍然需要分块，效率低下</li>
+</ol></li>
+<li>适合数据批量读写，吞吐量高</li>
+<li>不适合交互式应用，<strong>延迟太高</strong></li>
+<li>不支持多用户并发写同一个文件</li>
+</ol>
+
+<a class="post-dummy-target" id="5-hdfs常用操作命令"></a><h3>5.HDFS常用操作命令</h3>
+
+<blockquote>
+<p>HDFS提供了各种交互方式，例如通过Java API、HTTP、shell命令行</p>
+</blockquote>
+
+<a class="post-dummy-target" id="shell命令"></a><h4>Shell命令</h4>
+
+<p>可查文档：<a href="http://hadoop.apache.org/docs/r1.0.4/cn/hdfs_shell.html">http://hadoop.apache.org/docs/r1.0.4/cn/hdfs_shell.html</a></p>
+
+<a class="post-dummy-target" id="java命令"></a><h4>Java命令</h4>
+
+<p>实际的应用中，对HDFS的大多数操作还是通过FileSystem来操作，这部分重点介绍一下相关的接口，主要关注HDFS的实现类DistributedFileSystem及相关类。</p>
+
+<a class="post-dummy-target" id="二-mapreduce"></a><h2>二、MapReduce</h2>
+
+<blockquote>
+<p>分而治之的思想：一个大的任务分成多个小的任务(Map)，并行执行后，合并结果(Reduce)</p>
+</blockquote>
+
+<p><figure><img src=/images/loading.svg data-sizes=auto data-src=https://raw.githubusercontent.com/qiubinyang/qiubinyang.github.io/imgs/MapReduce.png alt= class=lazyload><figcaption class=image-caption></figcaption></figure></p>
+
+<a class="post-dummy-target" id="区分"></a><h3>区分</h3>
+
+<p>MapReduce阶段和DataNode存数据阶段都会有一个分割。数据在DataNode上是物理意义的分割成了一个个Block。而在MapReduce的Map阶段，会有一个split操作分割一个文件来分块取出来分别Map，一般情况下split的大小和block的大小是一样的。</p>
+
+        </div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>本文于 2019-08-17 更新</span>
+            </div>
+            <div class="post-info-license">
+                
+            </div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md">
+                
+                    
+                        <span><a class="link-to-markdown" href="https://qiubinyang.github.io/2019/08/hadoop%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.md" target="_blank">阅读原始文档</a></span>
+                    
+                
+            </div>
+            <div class="post-info-share">
+                
+                    <span>
+    
+        <a href="//twitter.com/share?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f08%2fhadoop%25E5%259F%25BA%25E7%25A1%2580%25E7%259F%25A5%25E8%25AF%2586%2f&amp;text=Hadoop%e5%9f%ba%e7%a1%80%e7%9f%a5%e8%af%86&amp;via=" target="_blank" title="Share on Twitter">
+            <i class="fab fa-twitter fa-fw"></i>
+        </a>
+    
+    
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fqiubinyang.github.io%2f2019%2f08%2fhadoop%25E5%259F%25BA%25E7%25A1%2580%25E7%259F%25A5%25E8%25AF%2586%2f" target="_blank" title="Share on Facebook">
+            <i class="fab fa-facebook-square fa-fw"></i>
+        </a>
+    
+    
+        <a href="//reddit.com/submit?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f08%2fhadoop%25E5%259F%25BA%25E7%25A1%2580%25E7%259F%25A5%25E8%25AF%2586%2f&amp;title=Hadoop%e5%9f%ba%e7%a1%80%e7%9f%a5%e8%af%86" target="_blank" title="Share on Reddit">
+            <i class="fab fa-reddit fa-fw"></i>
+        </a>
+    
+    
+    
+    
+    
+    
+    
+    
+        <a href="//service.weibo.com/share/share.php?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f08%2fhadoop%25E5%259F%25BA%25E7%25A1%2580%25E7%259F%25A5%25E8%25AF%2586%2f&amp;appkey=&amp;title=Hadoop%e5%9f%ba%e7%a1%80%e7%9f%a5%e8%af%86" target="_blank" title="Share on Weibo">
+            <i class="fab fa-weibo fa-fw"></i>
+        </a>
+    
+</span>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section>
+            
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/"><i class="fas fa-tag fa-fw"></i>基础知识笔记</a>
+                    </span>
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/hadoop/"><i class="fas fa-tag fa-fw"></i>Hadoop</a>
+                    </span>
+                
+            
+        </section>
+        <section>
+            <span><a href="javascript:window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="https://qiubinyang.github.io/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+        
+            <a href="https://qiubinyang.github.io/2019/08/basic-markdown-preview/" class="next" rel="next" title="Markdown 基本语法预览">Markdown 基本语法预览<i class="fas fa-angle-right fa-fw"></i></a>
+        
+    </div>
+</div>
+
+        <div class="post-comment">
+            
+        </div>
+    </article></div>
+            </main>
+            <footer class="footer">
+    <div class="copyright">
+        <div class="copyright-line">
+            由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+        <div class="copyright-line">
+            <i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://qiubinyang.github.io/">KevinQiu</a></span><span class="license">&nbsp;|&nbsp;<a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+    </div>
+</footer>
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+<script src="/js/lib/jquery/jquery.slim.min.min.js"></script>
+<script src="/js/lib/lazysizes/lazysizes.min.min.js"></script>
+<script src="/js/lib/smooth-scroll/smooth-scroll.polyfills.min.min.js"></script><script>window.scroll = new SmoothScroll('[data-scroll]', {speed: 300, speedAsDuration: true});</script>
+
+
+    
+    
+        
+    
+
+    
+
+    
+        <link rel="stylesheet" href="/css/lib/katex/katex.min.min.css"><script src="/js/lib/katex/katex.min.min.js"></script><script defer src="/js/lib/katex/auto-render.min.min.js" onload="renderMathInElement(document.body);"></script>
+    
+
+    
+
+    
+
+
+
+
+
+
+<script src="/js/blog.min.js"></script>
+
+
+    
+</div>
+        <a href="#" class="dynamic-to-top" id="dynamic-to-top" data-scroll><span>&nbsp;</span></a>
+    </body>
+</html>
