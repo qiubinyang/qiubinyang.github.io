@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>异常检测 Anomaly Detection | KevinQiu`s Blog</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noodp" />
+<meta name="Description" content="异常检测的基础知识">
+<link rel="prev" href="https://qiubinyang.github.io/2019/08/basic-markdown-preview/" />
+<link rel="canonical" href="https://qiubinyang.github.io/2019/12/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="异常检测 Anomaly Detection"/>
+<meta name="twitter:description" content="异常检测的基础知识"/>
+<script type="application/ld+json">
+    {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "异常检测 Anomaly Detection",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https:\/\/qiubinyang.github.io\/2019\/12\/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B\/"
+    },
+    
+        "image": {
+            "@type": "ImageObject",
+            "url": "https:\/\/qiubinyang.github.io\/cover.png",
+            "width":  800 ,
+            "height":  600 
+        },
+    
+    "genre": "posts",
+    
+        "keywords": "基础知识笔记, 机器学习, 异常检测",
+    
+    "wordcount":  2643 ,
+    "url": "https:\/\/qiubinyang.github.io\/2019\/12\/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B\/",
+    
+        "datePublished": "2019-12-11T02:28:35\x2b08:00",
+    
+    
+        "dateModified": "2019-12-11T02:28:35\x2b08:00",
+    
+    
+        "license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.",
+    
+    
+        "publisher": {
+            "@type": "Organization",
+            "name": "XXXX",
+            "logo": {
+            "@type": "ImageObject",
+            "url": "https:\/\/qiubinyang.github.io\/logo.png",
+            "width":  127 ,
+            "height":  40 
+            }
+        },
+    
+    
+    "description": "异常检测的基础知识"
+    }
+    </script>
+<link rel="stylesheet" href="/css/style.min.css">
+<link rel="stylesheet" href="/css/lib/fontawesome-free/all.min.min.css">
+
+<link rel="stylesheet" href="/css/lib/animate/animate.min.min.css">
+
+    </head>
+    <body>
+        <script>
+            window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            window.isDark && document.body.classList.add('dark-theme');
+        </script>
+        <div class="wrapper">
+            <nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-header">
+            <a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a>
+        </div>
+        <div class="navbar-menu">
+            
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/posts" title="">文章</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/tags" title="">标签</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/categories" title="">目录</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/about" title="">关于</a>
+            
+            <a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a>
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile">
+     <div class="navbar-container">
+        <div class="navbar-header">
+            <div><a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a><a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a></div>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="navbar-menu" id="mobile-menu">
+            
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/posts" title="">文章</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/tags" title="">标签</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/categories" title="">目录</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/about" title="">关于</a>
+            
+        </div>
+    </div>
+</nav><main class="main">
+                <div class="container">
+                    
+    
+    
+    
+
+    <article class="post-warp">
+        <h1 class="post-title animated flipInX">异常检测 Anomaly Detection</h1>
+
+        <div class="post-meta">
+            <div class="post-meta-main">
+                <a class="author" href="https://qiubinyang.github.io/" rel="author"><i class="fas fa-user-circle fa-fw"></i>KevinQiu&nbsp;</a>
+                <span class="post-category">
+                        收录于
+                        <i class="far fa-folder fa-fw"></i><a href="https://qiubinyang.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                            
+                    </span>
+            </div>
+            <div class="post-meta-other">
+                <i class="far fa-calendar-alt fa-fw"></i><time datetime=2019-12-11>2019-12-11</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>约 2643 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>预计阅读 6 分钟&nbsp;</div>
+        </div>
+
+        
+
+        <div class="post-toc" id="post-toc">
+                <h2 class="post-toc-title">目录</h2>
+                <div class="post-toc-content">
+                    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#异常值检测-离群点检测-outlier-detection">异常值检测（离群点检测），Outlier Detection</a></li>
+<li><a href="#新颖点检测-novelty-detection">新颖点检测，Novelty Detection</a></li>
+<li><a href="#注意点">注意点：</a></li>
+</ul></li>
+<li><a href="#类型">类型：</a></li>
+<li><a href="#训练模式">训练模式：</a></li>
+<li><a href="#异常检测方法">异常检测方法</a>
+<ul>
+<li><a href="#1-基于分类的异常检测">1. 基于分类的异常检测</a></li>
+<li><a href="#2-基于邻近距离的异常检测">2. 基于邻近距离的异常检测</a></li>
+<li><a href="#3-基于聚类的异常检测">3. 基于聚类的异常检测</a></li>
+<li><a href="#4-基于统计的异常检测">4. 基于统计的异常检测</a></li>
+<li><a href="#基于密度">基于密度</a></li>
+<li><a href="#专门异常点检测">专门异常点检测</a></li>
+<li><a href="#基于偏差">基于偏差</a></li>
+<li><a href="#深度学习">深度学习</a></li>
+</ul></li>
+<li><a href="#实操方法">实操方法</a>
+<ul>
+<li><a href="#有监督">有监督</a></li>
+<li><a href="#无监督">无监督</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                </div>
+            </div>
+            <div class="post-toc-mobile" id="post-toc-mobile">
+                <details>
+                    <summary><div class="post-toc-title"><span>目录</span><span><i class="details icon fas fa-angle-down"></i></span></div></summary>
+                    <div class="post-toc-content">
+                        
+                        
+                        <nav id="TableOfContentsMobile">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#异常值检测-离群点检测-outlier-detection">异常值检测（离群点检测），Outlier Detection</a></li>
+<li><a href="#新颖点检测-novelty-detection">新颖点检测，Novelty Detection</a></li>
+<li><a href="#注意点">注意点：</a></li>
+</ul></li>
+<li><a href="#类型">类型：</a></li>
+<li><a href="#训练模式">训练模式：</a></li>
+<li><a href="#异常检测方法">异常检测方法</a>
+<ul>
+<li><a href="#1-基于分类的异常检测">1. 基于分类的异常检测</a></li>
+<li><a href="#2-基于邻近距离的异常检测">2. 基于邻近距离的异常检测</a></li>
+<li><a href="#3-基于聚类的异常检测">3. 基于聚类的异常检测</a></li>
+<li><a href="#4-基于统计的异常检测">4. 基于统计的异常检测</a></li>
+<li><a href="#基于密度">基于密度</a></li>
+<li><a href="#专门异常点检测">专门异常点检测</a></li>
+<li><a href="#基于偏差">基于偏差</a></li>
+<li><a href="#深度学习">深度学习</a></li>
+</ul></li>
+<li><a href="#实操方法">实操方法</a>
+<ul>
+<li><a href="#有监督">有监督</a></li>
+<li><a href="#无监督">无监督</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                </details>
+            </div>
+
+        <div class="post-content">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+
+    <div class="admonition note"><p class="admonition-title"><i class="icon fas fa-pencil-alt"></i>定义</p><p>对不符合预期的数据、事件、模式进行识别。</p>
+</div>
+
+<p>在异常检测领域中，我们常常需要决定新观察的点是否属于与现有观察点相同的分布（则它称为inlier），或者被认为是不同的（称为outlier）。 在这里，必须做出两个重要的区别：</p>
+
+<a class="post-dummy-target" id="异常值检测-离群点检测-outlier-detection"></a><h3>异常值检测（离群点检测），Outlier Detection</h3>
+
+<p>训练数据包含异常值，这些异常值被定义为远离其他异常值的观察值。 因此，异常检测估计器试图适应训练数据最集中的区域，忽略不正常的观察。</p>
+
+<a class="post-dummy-target" id="新颖点检测-novelty-detection"></a><h3>新颖点检测，Novelty Detection</h3>
+
+<p>训练数据不受异常值的污染，我们有兴趣检测新观察是否是异常值。 在这种情况下，异常值也被称为新颖点（a novelty）。</p>
+
+<p>所谓新奇检测是识别新的或未知数据模式和规律的检测方法，这些规律和只是在已有机器学习系统的训练集中没有被发掘出来。新奇检测的前提是已知训练数据集是“纯净”的，未被真正的“噪音”数据或真实的“离群点”污染，然后针对这些数据训练完成之后再对新的数据做训练以寻找新奇数据的模式。</p>
+
+<p>新奇检测主要应用于新的模式、主题、趋势的探索和识别，包括信号处理、计算机视觉、模式识别、智能机器人等技术方向，应用领域例如潜在疾病的探索、新物种的发现、新传播主题的获取等。</p>
+
+<hr />
+
+<p>异常值检测和新颖性检测都属于异常检测，都是用来检测异常的、不常见的一些观察值。</p>
+
+<p>异常值检测是一种无监督的方法，新颖点检测是一种半监督的异常检测方法。 在异常值检测的情况下，异常值不能形成密集的簇，因为异常检测的估计器假设异常值总是位于低密度区域。 相反，在新颖性检测的背景下，新颖点可以形成密集的簇，只要它们处于训练数据的低密度区域中。</p>
+
+<a class="post-dummy-target" id="注意点"></a><h3>注意点：</h3>
+
+<ul>
+<li>如果训练样本中异常样本的比例比较高，违背了异常检测的基本假设，可能最终的效果会受到影响；</li>
+<li>异常检测根具体的应用场景紧密相关，算法检测出的“异常”不一定是我们实际想要的，比如，在识别虚假交易时，异常的交易未必就是虚假的交易。所以，在特征选择时，可能需要过滤不太相关的特征，以免识别出一些不太相关的“异常”。</li>
+</ul>
+
+<a class="post-dummy-target" id="类型"></a><h2>类型：</h2>
+
+<ol>
+<li>点异常</li>
+</ol>
+
+<p>单个数据与其余数据特征存在巨大差别。</p>
+
+<ol>
+<li>上下文异常</li>
+</ol>
+
+<p>统计指标上显示无异常，但是放在上下文环境中呈现异常。</p>
+
+<ol>
+<li>集体异常</li>
+</ol>
+
+<p>一个数据集合相对于整个集合是异常的。</p>
+
+<a class="post-dummy-target" id="训练模式"></a><h2>训练模式：</h2>
+
+<ol>
+<li>有监督</li>
+</ol>
+
+<p>存在问题：样本严重不平衡。一般异常检测样本远少于正常样本数量。其次，很难获得准确的并且具有代表性的异常样本类型，正负样本边界模糊，真值本身存在一些问题。</p>
+
+<ol>
+<li>半监督</li>
+</ol>
+
+<p>所有训练数据均为正常样本，用该模型检测异常样本。不常用。很难找到全覆盖所有异常的数据集。</p>
+
+<ol>
+<li>无监督</li>
+</ol>
+
+<p>广泛使用。</p>
+
+<a class="post-dummy-target" id="异常检测方法"></a><h2>异常检测方法</h2>
+
+<a class="post-dummy-target" id="1-基于分类的异常检测"></a><h3>1. 基于分类的异常检测</h3>
+
+<p>该方法将一组标签数据训练模型，然后将测试样本输入至模型，判断其是否异常。</p>
+
+<p><strong>使用该方法需要满足假设</strong>:在给定的特征空间能够学习到区分正负样本的分类器。找到强代表性的特征最为关键。</p>
+
+<p>该技术又可以分为二分类和多分类。二分类指样本中只有止负两类样本;多分类指有多类正样本，或者多类负样本。</p>
+
+<p><strong>使用到的技术有</strong>:神经网络、贝叶斯网络、SVM等。</p>
+
+<p><strong>优点</strong>:基于多分类的异常检测可以识别出具体的异常类别;测试阶段很快，适用于实时监测应用场景。</p>
+
+<p><strong>缺点</strong>:标签类别很难准确地获取，训练时间较长。</p>
+
+<a class="post-dummy-target" id="2-基于邻近距离的异常检测"></a><h3>2. 基于邻近距离的异常检测</h3>
+
+<p><strong>使用该方法需要满足假设</strong>:正常样本集中在密集领域，异常样本在分散领域。</p>
+
+<p><strong>通常采用的方法是</strong>：计算每个实例的相对密度，然后确定异常样本的密度范围。</p>
+
+<p><strong>优点</strong>:本质上属于无监督学习，并且不会对数据的分布做任何假设，属于数据驱动;相比于分类器，无监督技术实现简单，通常只涉及到距离计算。</p>
+
+<p><strong>缺点</strong>:如果数据中正常样本密度较为松散，则算法不能生效;如果训练集中没有足够的类似样本，则测试样本的误判率会很高。如果数据量非常大，则计算成本会很高;合适的度量距离难以确定，对于图形、序列等数据而言。</p>
+
+<p><strong>技术</strong>：knn（具有大k-最近邻距离的数据点被定义为异常）</p>
+
+<a class="post-dummy-target" id="3-基于聚类的异常检测"></a><h3>3. 基于聚类的异常检测</h3>
+
+<p><strong>基本思想是</strong>:将相似的数据实例划分到同一个集合中。</p>
+
+<p><strong>需要满足的假设</strong>:正常样本属于数据中的一个集合，而异常样本不属于任何集合;或者正常样本靠近聚类质心，而异常样本远离质心;或者正常样本属于大而密的集合，异常样本属于小集合或者稀疏集合。</p>
+
+<p><strong>优点</strong>:属于无监督学习，不需要提前打标签;模型预测速度快，测试时间短，适用于实时监测。</p>
+
+<p><strong>缺点</strong>:高度依赖于聚类算法能否获取正常样本聚类结构，所有的流程重点放在聚类上，没有对异常检测做优化;训练时计算复杂度高。</p>
+
+<p><strong>技术</strong>：K-means（如果到集群质心的距离高于阈值或者最近集群的大小低于阈值，则将数据点定义为异常）</p>
+
+<a class="post-dummy-target" id="4-基于统计的异常检测"></a><h3>4. 基于统计的异常检测</h3>
+
+<p>基本原理是由Ansconmbe于1960提出:“异常是一种部分或者完全不相关的观察，因为它不是由假设的模型随机产生的”。</p>
+
+<p>该方法的基本步骤是对数据点进行建模，再以假定的模型（如泊松分布、正太分布等）根据点的分布来确定是否异常。一般通过数据变异指标来发现异常数据。常用变异指标有极差、四分位数间距、均差、标准差、变异系数等。但是，基于统计的方法检测出来的异常点产生机制可能不唯一，而且它在很大程度上依赖于待挖掘的数据集是否满足某种概率分布模型，另外模型的参数、离群点的数目等都非常重要，确定这些因素通常都比较困难。因此，实际情况中算法的应用性和可移植性较差。</p>
+
+<p><strong>基本假设为</strong>:正常样本实例出现在模型的高概率区域，异常样本实例出现在模型的低概率区域。先通过止常样本数据得到统计模型，然后判读测试数据是否属于该模型。</p>
+
+<p><strong>优点</strong>:无监督学习，不需要标签;如果基础数据分布假设成立，则从统计上检测异常时可行的。</p>
+
+<p><strong>缺点</strong>:依赖于特定分布，但在很多场景下，假设是不成立的。</p>
+
+<a class="post-dummy-target" id="基于密度"></a><h3>基于密度</h3>
+
+<p>LOF(local outlier factor)(将密度大大低于邻居的样本视为异常值)，BIRCH，DBSCAN（如果数据点的局部区域内的数据点的数量低于阈值，则将其定义为异常）</p>
+
+<a class="post-dummy-target" id="专门异常点检测"></a><h3>专门异常点检测</h3>
+
+<p>隔离森林（较大高度平均值为异常值），one-class SVM（与超球体中心的距离大于r为新奇）</p>
+
+<a class="post-dummy-target" id="基于偏差"></a><h3>基于偏差</h3>
+
+<p>PCA/自编码器（具有高重建误差的数据点被定义为异常），隐马尔可夫模型（HMM）</p>
+
+<a class="post-dummy-target" id="深度学习"></a><h3>深度学习</h3>
+
+<ul>
+<li>Auto-Encoder</li>
+<li>GAN</li>
+</ul>
+
+<a class="post-dummy-target" id="实操方法"></a><h2>实操方法</h2>
+
+<a class="post-dummy-target" id="有监督"></a><h3>有监督</h3>
+
+<ul>
+<li>Classifier With Confidence Score(以$\lambda$为阈值)
+
+<ul>
+<li>取最高Score</li>
+<li>取Cross Entropy(交叉熵)</li>
+</ul></li>
+<li>Network For Confidence Estimation
+
+<ul>
+<li><em>Terrance Devries, Graham W. Taylor, Learning Confidence for Out-of-distributionDetection in Neural Networks. arxiv 2018</em></li>
+</ul></li>
+<li>生成异常数据
+
+<ul>
+<li><em>Kimin Lee, Honglak Lee, Kibok Lee, Jinwoo Shin, Training Confidence-calibrated Classifiers for Detecting Out-of-distribution Samples, ICLR 2018</em></li>
+<li><em>Mark Liger, Shachar Fleishman, Novelty Detection with GAN, arxiv, 2018</em></li>
+</ul></li>
+</ul>
+
+<a class="post-dummy-target" id="无监督"></a><h3>无监督</h3>
+
+<ul>
+<li>Maximum Likelihood(最大似然法)
+Scatter Plot Density $f_\theta(x)$
+
+<ul>
+<li>Assuming the data points is sampled from aprobability density function $f_\theta(x)$</li>
+<li>$\theta$ determines the shape of $f_\theta(x)$</li>
+<li>$\theta$ is unknown. to be found from data</li>
+</ul></li>
+<li>用AutoEncoder做异常检测
+
+<ul>
+<li><em>Variational Autoencoder based Anomaly Detection using Reconstruction Probability</em></li>
+<li><figure><img src=/images/loading.svg data-sizes=auto data-src=img/autoencoder.png alt= class=lazyload><figcaption class=image-caption></figcaption></figure></li>
+<li>通过测试AutoEncoder的还原度来判断</li>
+</ul></li>
+<li>One-Class SVM
+
+<ul>
+<li><em>Support Vector Method for Novelty Detection</em></li>
+<li><a href="https://papers.nips.cc/paper/1723-support-vector-method-for-novelty-detection.%20pdf">https://papers.nips.cc/paper/1723-support-vector-method-for-novelty-detection.%20pdf</a></li>
+</ul></li>
+<li>Isolated Forest</li>
+</ul>
+
+        </div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>本文于 2019-12-11 更新</span>
+            </div>
+            <div class="post-info-license">
+                
+            </div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md">
+                
+                    
+                        <span><a class="link-to-markdown" href="https://qiubinyang.github.io/2019/12/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/index.md" target="_blank">阅读原始文档</a></span>
+                    
+                
+            </div>
+            <div class="post-info-share">
+                
+                    <span>
+    
+        <a href="//twitter.com/share?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f12%2f%25E5%25BC%2582%25E5%25B8%25B8%25E6%25A3%2580%25E6%25B5%258B%2f&amp;text=%e5%bc%82%e5%b8%b8%e6%a3%80%e6%b5%8b%20Anomaly%20Detection&amp;via=" target="_blank" title="Share on Twitter">
+            <i class="fab fa-twitter fa-fw"></i>
+        </a>
+    
+    
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fqiubinyang.github.io%2f2019%2f12%2f%25E5%25BC%2582%25E5%25B8%25B8%25E6%25A3%2580%25E6%25B5%258B%2f" target="_blank" title="Share on Facebook">
+            <i class="fab fa-facebook-square fa-fw"></i>
+        </a>
+    
+    
+        <a href="//reddit.com/submit?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f12%2f%25E5%25BC%2582%25E5%25B8%25B8%25E6%25A3%2580%25E6%25B5%258B%2f&amp;title=%e5%bc%82%e5%b8%b8%e6%a3%80%e6%b5%8b%20Anomaly%20Detection" target="_blank" title="Share on Reddit">
+            <i class="fab fa-reddit fa-fw"></i>
+        </a>
+    
+    
+    
+    
+    
+    
+    
+    
+        <a href="//service.weibo.com/share/share.php?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f12%2f%25E5%25BC%2582%25E5%25B8%25B8%25E6%25A3%2580%25E6%25B5%258B%2f&amp;appkey=&amp;title=%e5%bc%82%e5%b8%b8%e6%a3%80%e6%b5%8b%20Anomaly%20Detection" target="_blank" title="Share on Weibo">
+            <i class="fab fa-weibo fa-fw"></i>
+        </a>
+    
+</span>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section>
+            
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/"><i class="fas fa-tag fa-fw"></i>基础知识笔记</a>
+                    </span>
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><i class="fas fa-tag fa-fw"></i>机器学习</a>
+                    </span>
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/"><i class="fas fa-tag fa-fw"></i>异常检测</a>
+                    </span>
+                
+            
+        </section>
+        <section>
+            <span><a href="javascript:window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="https://qiubinyang.github.io/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+            <a href="https://qiubinyang.github.io/2019/08/basic-markdown-preview/" class="prev" rel="prev" title="Markdown 基本语法预览"><i class="fas fa-angle-left fa-fw"></i>Markdown 基本语法预览</a>
+        
+        
+    </div>
+</div>
+
+        <div class="post-comment">
+            
+        </div>
+    </article></div>
+            </main>
+            <footer class="footer">
+    <div class="copyright">
+        <div class="copyright-line">
+            由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+        <div class="copyright-line">
+            <i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://qiubinyang.github.io/">KevinQiu</a></span><span class="license">&nbsp;|&nbsp;<a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+    </div>
+</footer>
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+<script src="/js/lib/jquery/jquery.slim.min.min.js"></script>
+<script src="/js/lib/lazysizes/lazysizes.min.min.js"></script>
+<script src="/js/lib/smooth-scroll/smooth-scroll.polyfills.min.min.js"></script><script>window.scroll = new SmoothScroll('[data-scroll]', {speed: 300, speedAsDuration: true});</script>
+
+
+    
+    
+        
+    
+
+    
+
+    
+        <link rel="stylesheet" href="/css/lib/katex/katex.min.min.css"><script src="/js/lib/katex/katex.min.min.js"></script><script defer src="/js/lib/katex/auto-render.min.min.js" onload="renderMathInElement(document.body);"></script>
+    
+
+    
+
+    
+
+
+
+
+
+
+<script src="/js/blog.min.js"></script>
+
+
+    
+</div>
+        <a href="#" class="dynamic-to-top" id="dynamic-to-top" data-scroll><span>&nbsp;</span></a>
+    </body>
+</html>

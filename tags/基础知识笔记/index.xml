@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 04 Aug 2019 22:49:56 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 11 Dec 2019 02:28:35 +0800</lastBuildDate>
     
 	<atom:link href="https://qiubinyang.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>异常检测 Anomaly Detection</title>
+      <link>https://qiubinyang.github.io/2019/12/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/</link>
+      <pubDate>Wed, 11 Dec 2019 02:28:35 +0800</pubDate>
+      
+      <guid>https://qiubinyang.github.io/2019/12/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/</guid>
+      <description>定义 对不符合预期的数据、事件、模式进行识别。 在异常检测领域中，我们常常需要决定新观察的点是否属于与现有观察点相同的分布（则它称为inlier</description>
+    </item>
     
     <item>
       <title>Hadoop基础知识</title>
