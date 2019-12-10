@@ -3,49 +3,49 @@
 
 # Hadoop
 组成：
-- 文件系统 HDFS
-- 并行计算框架 MapReduce
+* 文件系统 HDFS
+* 并行计算框架 MapReduce
 
 ## 一、HDFS
 ### 1.设计架构
-- 块(Block)
-  - 存储和处理的逻辑单元
-  - 默认64MB
-- NameNode
-  - 管理节点
-  - 存放文件元数据
-    - 文件与数据块的映射表
-    - 数据块与数据节点的映射表
-- DataNode
-  - 工作节点
-  - 存放具体数据
+* 块(Block)
+  * 存储和处理的逻辑单元
+  * 默认64MB
+* NameNode
+  * 管理节点
+  * 存放文件元数据
+    * 文件与数据块的映射表
+    * 数据块与数据节点的映射表
+* DataNode
+  * 工作节点
+  * 存放具体数据
 
 ![](https://raw.githubusercontent.com/qiubinyang/qiubinyang.github.io/imgs/hdfs%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.png)
 
 ### 2.数据管理策略
 1. 高可靠：
-   - 每个数据块3个副本，分布在两个机架内的三个节点上。
+   * 每个数据块3个副本，分布在两个机架内的三个节点上。
 
 2. 心跳检测
 ![](https://raw.githubusercontent.com/qiubinyang/qiubinyang.github.io/imgs/%E5%BF%83%E8%B7%B3%E6%A3%80%E6%B5%8B.png)
 
 3. 二级NameNode
-- 定期同步NameNode中的元数据映像文件和修改日志，NameNode发生故障时，备胎转正。
-- 只做备份，不参与NameNode操作
+* 定期同步NameNode中的元数据映像文件和修改日志，NameNode发生故障时，备胎转正。
+* 只做备份，不参与NameNode操作
 
 4. HDFS Federation
-- 我们知道NameNode的内存会制约文件数量，HDFS Federation提供了一种横向扩展NameNode的方式。在Federation模式中，每个NameNode管理命名空间的一部分，例如一个NameNode管理/user目录下的文件， 另一个NameNode管理/share目录下的文件。
-- 每个NameNode管理一个namespace volumn，所有volumn构成文件系统的元数据。每个NameNode同时维护一个Block Pool，保存Block的节点映射等信息。各NameNode之间是独立的，一个节点的失败不会导致其他节点管理的文件不可用。
-- 客户端使用mount table将文件路径映射到NameNode。mount table是在Namenode群组之上封装了一层，这一层也是一个Hadoop文件系统的实现，通过viewfs:协议访问。
+* 我们知道NameNode的内存会制约文件数量，HDFS Federation提供了一种横向扩展NameNode的方式。在Federation模式中，每个NameNode管理命名空间的一部分，例如一个NameNode管理/user目录下的文件， 另一个NameNode管理/share目录下的文件。
+* 每个NameNode管理一个namespace volumn，所有volumn构成文件系统的元数据。每个NameNode同时维护一个Block Pool，保存Block的节点映射等信息。各NameNode之间是独立的，一个节点的失败不会导致其他节点管理的文件不可用。
+* 客户端使用mount table将文件路径映射到NameNode。mount table是在Namenode群组之上封装了一层，这一层也是一个Hadoop文件系统的实现，通过viewfs:协议访问。
 
 5. HDFS HA(High Availability高可用性)
 
 启动新的Namenode之后，需要重新配置客户端和DataNode的NameNode信息。另外重启耗时一般比较久，稍具规模的集群重启经常需要几十分钟甚至数小时，造成重启耗时的原因大致有： 
-- 元数据镜像文件载入到内存耗时较长。 
-- 需要重放edit log 
-- 需要收到来自DataNode的状态报告并且满足条件后才能离开安全模式提供写服务。
-- HA方案：
-  - 采用HA的HDFS集群配置两个NameNode，分别处于Active和Standby状态。当Active NameNode故障之后，Standby接过责任继续提供服务，用户没有明显的中断感觉。一般耗时在几十秒到数分钟。
+* 元数据镜像文件载入到内存耗时较长。 
+* 需要重放edit log 
+* 需要收到来自DataNode的状态报告并且满足条件后才能离开安全模式提供写服务。
+* HA方案：
+  * 采用HA的HDFS集群配置两个NameNode，分别处于Active和Standby状态。当Active NameNode故障之后，Standby接过责任继续提供服务，用户没有明显的中断感觉。一般耗时在几十秒到数分钟。
 
 6. HDFS为每一个用户创建了一个回收站
    1. 在/usr/用户名/.Trash/中

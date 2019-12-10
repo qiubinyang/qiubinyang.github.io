@@ -44,14 +44,14 @@ yum install -y
 | kafka     | /opt/kafka     |
 
 >hostname
-- master
-- slave1
-- slave2
+* master
+* slave1
+* slave2
 
 >ip
-- 192.168.100.100
-- 192.168.100.101
-- 192.168.100.102
+* 192.168.100.100
+* 192.168.100.101
+* 192.168.100.102
 
 >改ip地址
 ```shell
@@ -104,12 +104,10 @@ echo 'export PATH=$PATH:$HADOOP_HOME' >> /etc/profile
 ```
 
 ><b id="hadoop-site">hadoop-env.sh</b>
-
 export JAVA_HOME=java安装目录(/opt/jdk_1.8)   
 export HADOOP_LOG_DIR=日志目录(创建一个/opt/hadoop_repo/logs/hadoop)
 
 ><b id="yarn-site">yarn-env.sh</b>
-
 export JAVA_HOME=java目录   
 export YARN_LOG_DIR=日志目录(创建一个/opt/hadoop_repo/logs/yarn)
 
@@ -134,7 +132,6 @@ export YARN_LOG_DIR=日志目录(创建一个/opt/hadoop_repo/logs/yarn)
 ```
 
 ><b id="hdfs-site">hdfs-site.xml</b>
-
 namenode和datanode的配置可以不用在这儿写，第一次启动hadoop时格式化操作会在repo中自动生成他们的工作文件夹。只配置一个replication就行。replication的数量指的是副本数量，**因为是伪分布式，没有三个副本，所以修改为1。**
 ```xml
 <configuration>
@@ -168,7 +165,6 @@ namenode和datanode的配置可以不用在这儿写，第一次启动hadoop时�
 ```
 
 ><b id="mapred-site">mapred-site.xml</b>
-
 这里需要把```mapred-site.xml.template```改成```mapred-site.xml```
 
 ```shell
@@ -192,7 +188,6 @@ cp mapred-site.xml.template mapred-site.xml
 ```
 
 >slaves文件
-
 伪分布时保留为localhost就行
 
 ---
@@ -218,11 +213,11 @@ hadoop namenode -format
 
 # 分布式集群搭建
 比如这里规划：
-- master
-- slave1
-- slave2
+* master
+* slave1
+* slave2
 
->>>强调：先配置maser，然后直接把hadoop文件夹发送给slaves就行了。
+>强调：先配置maser，然后直接把hadoop文件夹发送给slaves就行了。
 
 >注意：针对免密登录，不仅要各自能够免密登录自己，还需配置**主节点**可以免密登录从节点。
 ```
@@ -237,7 +232,7 @@ chmod 600  ~/.ssh/authorized_keys
 exit
 ```
 
->>注意：需要保证集群的各个节点时间同步。
+>注意：需要保证集群的各个节点时间同步。
 ```
 ntpdate -u ntp.sjtu.edu.cn
 ```
@@ -246,7 +241,6 @@ ntpdate -u ntp.sjtu.edu.cn
 ## 与伪分布配置的不同
 
 >hdfs-site.xml
-
 增加副本为2。
 增加参数指定在哪个机器上启动SecondaryNameNode。
 ```xml
@@ -263,7 +257,6 @@ ntpdate -u ntp.sjtu.edu.cn
 ```
 
 >yarn-site.xml
-
 指定yarn的主节点。
 ```xml
 <configuration>

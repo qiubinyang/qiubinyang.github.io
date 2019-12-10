@@ -41,7 +41,7 @@
     
         "keywords": "基础知识笔记, Hadoop",
     
-    "wordcount":  1327 ,
+    "wordcount":  1301 ,
     "url": "https:\/\/qiubinyang.github.io\/2019\/08\/hadoop%E6%90%AD%E5%BB%BA\/",
     
         "datePublished": "2019-08-04T22:49:56\x2b08:00",
@@ -142,7 +142,7 @@
             </div>
             <div class="post-meta-other">
                 <i class="far fa-calendar-alt fa-fw"></i><time datetime=2019-08-04>2019-08-04</time>&nbsp;
-                <i class="fas fa-pencil-alt fa-fw"></i>约 1327 字&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>约 1301 字&nbsp;
                 <i class="far fa-clock fa-fw"></i>预计阅读 3 分钟&nbsp;</div>
         </div>
 
@@ -159,10 +159,7 @@
 <li><a href="#java安装">Java安装</a></li>
 <li><a href="#运行">运行</a></li>
 </ul></li>
-<li><a href="#分布式集群搭建">分布式集群搭建</a>
-<ul>
-<li><a href="#与伪分布配置的不同">与伪分布配置的不同</a></li>
-</ul></li>
+<li><a href="#分布式集群搭建">分布式集群搭建</a></li>
 </ul>
 </nav>
                 </div>
@@ -181,10 +178,7 @@
 <li><a href="#java安装">Java安装</a></li>
 <li><a href="#运行">运行</a></li>
 </ul></li>
-<li><a href="#分布式集群搭建">分布式集群搭建</a>
-<ul>
-<li><a href="#与伪分布配置的不同">与伪分布配置的不同</a></li>
-</ul></li>
+<li><a href="#分布式集群搭建">分布式集群搭建</a></li>
 </ul>
 </nav>
                     </div>
@@ -308,14 +302,14 @@
 
 <blockquote>
 <p>hostname
-- master
-- slave1
-- slave2</p>
+* master
+* slave1
+* slave2</p>
 
 <p>ip
-- 192.168.100.100
-- 192.168.100.101
-- 192.168.100.102</p>
+* 192.168.100.100
+* 192.168.100.101
+* 192.168.100.102</p>
 
 <p>改ip地址</p>
 <div class="highlight"><div class="chroma">
@@ -413,20 +407,14 @@ systemctl disable firewalld.service</code></pre></td></tr></table>
 echo &#39;export PATH=$PATH:$HADOOP_HOME&#39; &gt;&gt; /etc/profile</pre></td></tr></table>
 </div>
 </div>
-<p><b id="hadoop-site">hadoop-env.sh</b></p>
-</blockquote>
-
-<p>export JAVA_HOME=java安装目录(/opt/jdk_1.8)<br />
+<p><b id="hadoop-site">hadoop-env.sh</b>
+export JAVA_HOME=java安装目录(/opt/jdk_1.8)<br />
 export HADOOP_LOG_DIR=日志目录(创建一个/opt/hadoop_repo/logs/hadoop)</p>
 
-<blockquote>
-<p><b id="yarn-site">yarn-env.sh</b></p>
-</blockquote>
-
-<p>export JAVA_HOME=java目录<br />
+<p><b id="yarn-site">yarn-env.sh</b>
+export JAVA_HOME=java目录<br />
 export YARN_LOG_DIR=日志目录(创建一个/opt/hadoop_repo/logs/yarn)</p>
 
-<blockquote>
 <p><b id="core-site">core-site.xml</b></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -466,10 +454,8 @@ export YARN_LOG_DIR=日志目录(创建一个/opt/hadoop_repo/logs/yarn)</p>
 <span class="nt">&lt;/configuration&gt;</span></code></pre></td></tr></table>
 </div>
 </div>
-<p><b id="hdfs-site">hdfs-site.xml</b></p>
-</blockquote>
-
-<p>namenode和datanode的配置可以不用在这儿写，第一次启动hadoop时格式化操作会在repo中自动生成他们的工作文件夹。只配置一个replication就行。replication的数量指的是副本数量，<strong>因为是伪分布式，没有三个副本，所以修改为1。</strong></p>
+<p><b id="hdfs-site">hdfs-site.xml</b>
+namenode和datanode的配置可以不用在这儿写，第一次启动hadoop时格式化操作会在repo中自动生成他们的工作文件夹。只配置一个replication就行。replication的数量指的是副本数量，<strong>因为是伪分布式，没有三个副本，所以修改为1。</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-xml" data-lang="xml"><span class="lnt"> 1
@@ -532,11 +518,8 @@ export YARN_LOG_DIR=日志目录(创建一个/opt/hadoop_repo/logs/yarn)</p>
 <span class="nt">&lt;/configuration&gt;</span></code></pre></td></tr></table>
 </div>
 </div>
-<blockquote>
-<p><b id="mapred-site">mapred-site.xml</b></p>
-</blockquote>
-
-<p>这里需要把<code>mapred-site.xml.template</code>改成<code>mapred-site.xml</code></p>
+<p><b id="mapred-site">mapred-site.xml</b>
+这里需要把<code>mapred-site.xml.template</code>改成<code>mapred-site.xml</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
@@ -574,10 +557,9 @@ export YARN_LOG_DIR=日志目录(创建一个/opt/hadoop_repo/logs/yarn)</p>
 <span class="nt">&lt;/property&gt;</span></code></pre></td></tr></table>
 </div>
 </div>
-<p>slaves文件</p>
+<p>slaves文件
+伪分布时保留为localhost就行</p>
 </blockquote>
-
-<p>伪分布时保留为localhost就行</p>
 
 <hr />
 
@@ -623,18 +605,35 @@ export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH</pre></td></tr></table>
 <a class="post-dummy-target" id="分布式集群搭建"></a><h1>分布式集群搭建</h1>
 
 <p>比如这里规划：
-- master
-- slave1
-- slave2</p>
+* master
+* slave1
+* slave2</p>
 
-<blockquote>
-<blockquote>
 <blockquote>
 <p>强调：先配置maser，然后直接把hadoop文件夹发送给slaves就行了。</p>
+
+<p>注意：针对免密登录，不仅要各自能够免密登录自己，还需配置<strong>主节点</strong>可以免密登录从节点。
+```
+scp ~/.ssh/id_rsa.pub hadoop@slave1:~/</p>
 </blockquote>
 </blockquote>
 
-<p>注意：针对免密登录，不仅要各自能够免密登录自己，还需配置<strong>主节点</strong>可以免密登录从节点。</p>
+<p>ssh slave1</p>
+
+<p>cat ~/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</p>
+
+<p>chmod 600  ~/.ssh/authorized_keys</p>
+
+<p>exit</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">&gt;注意：需要保证集群的各个节点时间同步。</pre></td></tr></table>
+</div>
+</div>
+<p>ntpdate -u ntp.sjtu.edu.cn</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><span class="lnt">1
@@ -642,112 +641,58 @@ export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH</pre></td></tr></table>
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
 </span></pre></td>
 <td class="lntd">
-<pre class="chroma">scp ~/.ssh/id_rsa.pub hadoop@slave1:~/
+<pre class="chroma">## 与伪分布配置的不同
 
-ssh slave1
-
-cat ~/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
-
-chmod 600  ~/.ssh/authorized_keys
-
-exit</pre></td></tr></table>
+&gt;hdfs-site.xml
+增加副本为2。
+增加参数指定在哪个机器上启动SecondaryNameNode。</pre></td></tr></table>
 </div>
 </div>
-<blockquote>
-<p>注意：需要保证集群的各个节点时间同步。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">ntpdate -u ntp.sjtu.edu.cn</pre></td></tr></table>
-</div>
-</div></blockquote>
-</blockquote>
-
-<a class="post-dummy-target" id="与伪分布配置的不同"></a><h2>与伪分布配置的不同</h2>
-
-<blockquote>
-<p>hdfs-site.xml</p>
-</blockquote>
-
-<p>增加副本为2。
-增加参数指定在哪个机器上启动SecondaryNameNode。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;configuration&gt;</span>
-　　<span class="nt">&lt;property&gt;</span>
-　　　　<span class="nt">&lt;name&gt;</span>dfs.replication<span class="nt">&lt;/name&gt;</span>
-　　　　<span class="nt">&lt;value&gt;</span>2<span class="nt">&lt;/value&gt;</span>
-　　<span class="nt">&lt;/property&gt;</span>
-　　<span class="nt">&lt;property&gt;</span>
-　　　　<span class="nt">&lt;name&gt;</span>dfs.namenode.secondary.http-address<span class="nt">&lt;/name&gt;</span>
-　　　　<span class="nt">&lt;value&gt;</span>master:50090<span class="nt">&lt;/value&gt;</span>
-　　<span class="nt">&lt;/property&gt;</span>
-<span class="nt">&lt;/configuration&gt;</span></code></pre></td></tr></table>
-</div>
-</div>
-<blockquote>
-<p>yarn-site.xml</p>
-</blockquote>
-
-<p>指定yarn的主节点。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;configuration&gt;</span>
-　　<span class="nt">&lt;property&gt;</span>
-　　　　<span class="nt">&lt;name&gt;</span>yarn.resourcemanager.hostname<span class="nt">&lt;/name&gt;</span>
-　　　　<span class="nt">&lt;value&gt;</span>master<span class="nt">&lt;/value&gt;</span>
-　　<span class="nt">&lt;/property&gt;</span>
-　　<span class="nt">&lt;property&gt;</span>
-　　　　<span class="nt">&lt;name&gt;</span>yarn.nodemanager.aux-services<span class="nt">&lt;/name&gt;</span>
-　　　　<span class="nt">&lt;value&gt;</span>mapreduce_shuffle<span class="nt">&lt;/value&gt;</span>
-　　<span class="nt">&lt;/property&gt;</span>
-<span class="nt">&lt;/configuration&gt;</span></code></pre></td></tr></table>
-</div>
-</div>
-<blockquote>
-<p>slaves</p>
+<p>xml
+<configuration>
+　　<property>
+　　　　<name>dfs.replication</name>
+　　　　<value>2</value>
+　　</property>
+　　<property>
+　　　　<name>dfs.namenode.secondary.http-address</name>
+　　　　<value>master:50090</value>
+　　</property>
+</configuration></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><span class="lnt">1
 </span><span class="lnt">2
 </span></pre></td>
 <td class="lntd">
-<pre class="chroma">slave1
-slave2</pre></td></tr></table>
+<pre class="chroma">&gt;yarn-site.xml
+指定yarn的主节点。</pre></td></tr></table>
 </div>
-</div></blockquote>
+</div>
+<p>xml
+<configuration>
+　　<property>
+　　　　<name>yarn.resourcemanager.hostname</name>
+　　　　<value>master</value>
+　　</property>
+　　<property>
+　　　　<name>yarn.nodemanager.aux-services</name>
+　　　　<value>mapreduce_shuffle</value>
+　　</property>
+</configuration></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">&gt;slaves</pre></td></tr></table>
+</div>
+</div>
+<p>slave1
+slave2
+```</p>
 
         </div>
 

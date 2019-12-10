@@ -18,7 +18,7 @@
       <pubDate>Sun, 04 Aug 2019 22:49:56 +0800</pubDate>
       
       <guid>https://qiubinyang.github.io/2019/08/hadoop%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
-      <description>Hadoop 组成： - 文件系统 HDFS - 并行计算框架 MapReduce 一、HDFS 1.设计架构 块(Block) 存储和处理的逻辑单元 默认64MB NameNode 管理节点 存放文件元数据 文件与数</description>
+      <description>Hadoop 组成： * 文件系统 HDFS * 并行计算框架 MapReduce 一、HDFS 1.设计架构 块(Block) 存储和处理的逻辑单元 默认64MB NameNode 管理节点 存放文件元数据 文件与数</description>
     </item>
     
     <item>

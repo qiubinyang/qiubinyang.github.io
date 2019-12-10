@@ -248,8 +248,8 @@
 <a class="post-dummy-target" id="hadoop"></a><h1>Hadoop</h1>
 
 <p>组成：
-- 文件系统 HDFS
-- 并行计算框架 MapReduce</p>
+* 文件系统 HDFS
+* 并行计算框架 MapReduce</p>
 
 <a class="post-dummy-target" id="一-hdfs"></a><h2>一、HDFS</h2>
 
@@ -310,11 +310,11 @@
 </ol>
 
 <p>启动新的Namenode之后，需要重新配置客户端和DataNode的NameNode信息。另外重启耗时一般比较久，稍具规模的集群重启经常需要几十分钟甚至数小时，造成重启耗时的原因大致有： 
-- 元数据镜像文件载入到内存耗时较长。 
-- 需要重放edit log 
-- 需要收到来自DataNode的状态报告并且满足条件后才能离开安全模式提供写服务。
-- HA方案：
-  - 采用HA的HDFS集群配置两个NameNode，分别处于Active和Standby状态。当Active NameNode故障之后，Standby接过责任继续提供服务，用户没有明显的中断感觉。一般耗时在几十秒到数分钟。</p>
+* 元数据镜像文件载入到内存耗时较长。 
+* 需要重放edit log 
+* 需要收到来自DataNode的状态报告并且满足条件后才能离开安全模式提供写服务。
+* HA方案：
+  * 采用HA的HDFS集群配置两个NameNode，分别处于Active和Standby状态。当Active NameNode故障之后，Standby接过责任继续提供服务，用户没有明显的中断感觉。一般耗时在几十秒到数分钟。</p>
 
 <ol>
 <li>HDFS为每一个用户创建了一个回收站
