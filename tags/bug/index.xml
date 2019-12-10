@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>其他 on KevinQiu`s Blog</title>
-    <link>https://qiubinyang.github.io/tags/%E5%85%B6%E4%BB%96/</link>
-    <description>Recent content in 其他 on KevinQiu`s Blog</description>
+    <title>Bug on KevinQiu`s Blog</title>
+    <link>https://qiubinyang.github.io/tags/bug/</link>
+    <description>Recent content in Bug on KevinQiu`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Wed, 11 Dec 2019 04:24:29 +0800</lastBuildDate>
     
-	<atom:link href="https://qiubinyang.github.io/tags/%E5%85%B6%E4%BB%96/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://qiubinyang.github.io/tags/bug/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,19 +19,6 @@
       
       <guid>https://qiubinyang.github.io/2019/12/hugo%E4%B8%BB%E9%A2%98bug%E4%BF%AE%E5%A4%8D/</guid>
       <description>目前使用的LoveIt主题是我好不容易在一大堆主题中找到了最满意的主题，不仅干净简洁优雅，而且能满足我程序员的一切博客要求，简直不要太好！但</description>
-    </item>
-    
-    <item>
-      <title>Markdown 基本语法预览</title>
-      <link>https://qiubinyang.github.io/2019/08/basic-markdown-preview/</link>
-      <pubDate>Sun, 25 Aug 2019 16:22:42 +0800</pubDate>
-      
-      <guid>https://qiubinyang.github.io/2019/08/basic-markdown-preview/</guid>
-      <description>&lt;p&gt;这是一篇用于预览 :(fab fa-markdown): Markdown 基本语法的文章。&lt;/p&gt;
-
-&lt;p&gt;文章内容基于 &lt;a href=&#34;https://github.github.com/gfm&#34;&gt;GitHub Flavo红色 Markdown Spec&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;不包含复杂的规则说明，仅仅展示 GFM 所约定的 Markdown 基本语法。&lt;/p&gt;</description>
     </item>
     
   </channel>

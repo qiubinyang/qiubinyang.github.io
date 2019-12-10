@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 11 Dec 2019 02:28:35 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 11 Dec 2019 04:24:29 +0800</lastBuildDate>
     
 	<atom:link href="https://qiubinyang.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Hugo主题Bug修复</title>
+      <link>https://qiubinyang.github.io/2019/12/hugo%E4%B8%BB%E9%A2%98bug%E4%BF%AE%E5%A4%8D/</link>
+      <pubDate>Wed, 11 Dec 2019 04:24:29 +0800</pubDate>
+      
+      <guid>https://qiubinyang.github.io/2019/12/hugo%E4%B8%BB%E9%A2%98bug%E4%BF%AE%E5%A4%8D/</guid>
+      <description>目前使用的LoveIt主题是我好不容易在一大堆主题中找到了最满意的主题，不仅干净简洁优雅，而且能满足我程序员的一切博客要求，简直不要太好！但</description>
+    </item>
     
     <item>
       <title>异常检测 Anomaly Detection</title>
