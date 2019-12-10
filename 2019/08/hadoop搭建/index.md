@@ -1,7 +1,9 @@
 # Hadoop环境搭建
 
 
-<span style="color: red; font-size: 20px">完全分布式搭建，搭建好master之后，直接把master的hadoop文件夹发送给slaves就可以了</span>
+{{% admonition "note" "特别注意" %}}
+完全分布式搭建，搭建好master之后，直接把master的hadoop文件夹发送给slaves就可以了
+{{% /admonition  %}}
 
 # 伪分布式搭建
 
@@ -43,17 +45,17 @@ yum install -y
 | zookeeper | /opt/zookeeper |
 | kafka     | /opt/kafka     |
 
->hostname
+### hostname
 * master
 * slave1
 * slave2
 
->ip
+### ip
 * 192.168.100.100
 * 192.168.100.101
 * 192.168.100.102
 
->改ip地址
+### 改ip地址
 ```shell
 nmcli connection ens33 ipv4.address 192.168.100.100
 nmcli connection ens33 ipv4.gateway 192.168.100.2
@@ -66,7 +68,7 @@ vim /etc/sysconfig/network-scripts/ifcfg-ens33
 systemstl restart network
 ```
 
->修改hosts
+### 修改hosts
 ```shell
 vim /etc/hosts
 ```
@@ -77,7 +79,7 @@ vim /etc/hosts
 192.168.100.102 slave2
 ```
 
->ssh无密码登录
+### ssh无密码登录
 ```shell
 ssh-keygen -t rsa
 
@@ -87,7 +89,7 @@ chmod 600  ~/.ssh/authorized_keys
 ```
 全部采用默认值，第一次会输入yes，后面就是无密码登录了
 
->关闭防火墙和selinux
+### 关闭防火墙和selinux
 ```shell
 systemctl start firewalld.service#启动firewall
 
@@ -96,22 +98,22 @@ systemctl stop firewalld.service#停止firewall
 systemctl disable firewalld.service
 ```
 
->添加环境变量
+### 添加环境变量
 ```
 echo 'export HADOOP_HOME=/opt/hadoop/bin:/opt/hadoop/sbin' >> /etc/profile
 
 echo 'export PATH=$PATH:$HADOOP_HOME' >> /etc/profile
 ```
 
-><b id="hadoop-site">hadoop-env.sh</b>
+### <b id="hadoop-site">hadoop-env.sh</b>
 export JAVA_HOME=java安装目录(/opt/jdk_1.8)   
 export HADOOP_LOG_DIR=日志目录(创建一个/opt/hadoop_repo/logs/hadoop)
 
-><b id="yarn-site">yarn-env.sh</b>
+### <b id="yarn-site">yarn-env.sh</b>
 export JAVA_HOME=java目录   
 export YARN_LOG_DIR=日志目录(创建一个/opt/hadoop_repo/logs/yarn)
 
-><b id="core-site">core-site.xml</b>
+### <b id="core-site">core-site.xml</b>
 ```xml
 <configuration>
   <property>
@@ -131,7 +133,7 @@ export YARN_LOG_DIR=日志目录(创建一个/opt/hadoop_repo/logs/yarn)
 </configuration>
 ```
 
-><b id="hdfs-site">hdfs-site.xml</b>
+### <b id="hdfs-site">hdfs-site.xml</b>
 namenode和datanode的配置可以不用在这儿写，第一次启动hadoop时格式化操作会在repo中自动生成他们的工作文件夹。只配置一个replication就行。replication的数量指的是副本数量，**因为是伪分布式，没有三个副本，所以修改为1。**
 ```xml
 <configuration>
@@ -164,7 +166,7 @@ namenode和datanode的配置可以不用在这儿写，第一次启动hadoop时�
 </configuration>
 ```
 
-><b id="mapred-site">mapred-site.xml</b>
+### <b id="mapred-site">mapred-site.xml</b>
 这里需要把```mapred-site.xml.template```改成```mapred-site.xml```
 
 ```shell
@@ -179,7 +181,7 @@ cp mapred-site.xml.template mapred-site.xml
 ```
 
 
-><b id="yarn-site">yarn-site.xml</b>
+### <b id="yarn-site">yarn-site.xml</b>
 ```xml
 <property>
   <name>yarn.nodemanager.aux-services</name>
@@ -187,7 +189,7 @@ cp mapred-site.xml.template mapred-site.xml
 </property>
 ```
 
->slaves文件
+### slaves文件
 伪分布时保留为localhost就行
 
 ---
@@ -213,6 +215,7 @@ hadoop namenode -format
 
 # 分布式集群搭建
 比如这里规划：
+
 * master
 * slave1
 * slave2
@@ -220,6 +223,7 @@ hadoop namenode -format
 >强调：先配置maser，然后直接把hadoop文件夹发送给slaves就行了。
 
 >注意：针对免密登录，不仅要各自能够免密登录自己，还需配置**主节点**可以免密登录从节点。
+
 ```
 scp ~/.ssh/id_rsa.pub hadoop@slave1:~/
 
@@ -240,7 +244,7 @@ ntpdate -u ntp.sjtu.edu.cn
 
 ## 与伪分布配置的不同
 
->hdfs-site.xml
+### hdfs-site.xml
 增加副本为2。
 增加参数指定在哪个机器上启动SecondaryNameNode。
 ```xml
@@ -256,7 +260,7 @@ ntpdate -u ntp.sjtu.edu.cn
 </configuration>
 ```
 
->yarn-site.xml
+### yarn-site.xml
 指定yarn的主节点。
 ```xml
 <configuration>
@@ -271,7 +275,7 @@ ntpdate -u ntp.sjtu.edu.cn
 </configuration>
 ```
 
->slaves
+### slaves
 ```
 slave1
 slave2
