@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>机器学习 on KevinQiu`s Blog</title>
-    <link>https://qiubinyang.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
-    <description>Recent content in 机器学习 on KevinQiu`s Blog</description>
+    <title>GAN on KevinQiu`s Blog</title>
+    <link>https://qiubinyang.github.io/tags/gan/</link>
+    <description>Recent content in GAN on KevinQiu`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Tue, 17 Dec 2019 18:48:28 +0800</lastBuildDate>
     
-	<atom:link href="https://qiubinyang.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://qiubinyang.github.io/tags/gan/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,15 +19,6 @@
       
       <guid>https://qiubinyang.github.io/2019/12/gan/</guid>
       <description>Structured Learning ML is to find a function of f: $$ f:X \rightarrow Y $$ Regression -&amp;gt; scalar Classification -&amp;gt; class (one-hot vector) Structured Learning -&amp;gt; Sequence 语音识别 NLP ChatBot Matrix Image2Image Graph Tree&amp;hellip; Basic Idea of GAN 有两部分组成： 生成器Generator 判别器Discrim</description>
-    </item>
-    
-    <item>
-      <title>异常检测 Anomaly Detection</title>
-      <link>https://qiubinyang.github.io/2019/12/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/</link>
-      <pubDate>Wed, 11 Dec 2019 02:28:35 +0800</pubDate>
-      
-      <guid>https://qiubinyang.github.io/2019/12/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/</guid>
-      <description>定义 对不符合预期的数据、事件、模式进行识别。 在异常检测领域中，我们常常需要决定新观察的点是否属于与现有观察点相同的分布（则它称为inlier</description>
     </item>
     
   </channel>

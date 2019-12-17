@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 11 Dec 2019 04:24:29 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 17 Dec 2019 18:48:28 +0800</lastBuildDate>
     
 	<atom:link href="https://qiubinyang.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GAN基础</title>
+      <link>https://qiubinyang.github.io/2019/12/gan/</link>
+      <pubDate>Tue, 17 Dec 2019 18:48:28 +0800</pubDate>
+      
+      <guid>https://qiubinyang.github.io/2019/12/gan/</guid>
+      <description>Structured Learning ML is to find a function of f: $$ f:X \rightarrow Y $$ Regression -&amp;gt; scalar Classification -&amp;gt; class (one-hot vector) Structured Learning -&amp;gt; Sequence 语音识别 NLP ChatBot Matrix Image2Image Graph Tree&amp;hellip; Basic Idea of GAN 有两部分组成： 生成器Generator 判别器Discrim</description>
+    </item>
     
     <item>
       <title>Hugo主题Bug修复</title>

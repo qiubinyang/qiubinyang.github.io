@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>GAN基础 | KevinQiu`s Blog</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noodp" />
+<meta name="Description" content="Generative Adversarial Network（对抗生成网络）基础介绍">
+<link rel="prev" href="https://qiubinyang.github.io/2019/12/hugo%E4%B8%BB%E9%A2%98bug%E4%BF%AE%E5%A4%8D/" />
+<link rel="canonical" href="https://qiubinyang.github.io/2019/12/gan/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="GAN基础"/>
+<meta name="twitter:description" content="Generative Adversarial Network（对抗生成网络）基础介绍"/>
+<script type="application/ld+json">
+    {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "GAN基础",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https:\/\/qiubinyang.github.io\/2019\/12\/gan\/"
+    },
+    
+        "image": {
+            "@type": "ImageObject",
+            "url": "https:\/\/qiubinyang.github.io\/cover.png",
+            "width":  800 ,
+            "height":  600 
+        },
+    
+    "genre": "posts",
+    
+        "keywords": "基础知识笔记, 机器学习, GAN",
+    
+    "wordcount":  1466 ,
+    "url": "https:\/\/qiubinyang.github.io\/2019\/12\/gan\/",
+    
+        "datePublished": "2019-12-17T18:48:28\x2b08:00",
+    
+    
+        "dateModified": "2019-12-17T18:48:28\x2b08:00",
+    
+    
+        "license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.",
+    
+    
+        "publisher": {
+            "@type": "Organization",
+            "name": "XXXX",
+            "logo": {
+            "@type": "ImageObject",
+            "url": "https:\/\/qiubinyang.github.io\/logo.png",
+            "width":  127 ,
+            "height":  40 
+            }
+        },
+    
+    
+    "description": "Generative Adversarial Network（对抗生成网络）基础介绍"
+    }
+    </script>
+<link rel="stylesheet" href="/css/style.min.css">
+<link rel="stylesheet" href="/css/lib/fontawesome-free/all.min.min.css">
+
+<link rel="stylesheet" href="/css/lib/animate/animate.min.min.css">
+
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+              {left: "$$", right: "$$", display: true},
+              {left: "$", right: "$", display: false}
+            ]
+        });
+    });
+</script>
+
+    </head>
+    <body>
+        <script>
+            window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            window.isDark && document.body.classList.add('dark-theme');
+        </script>
+        <div class="wrapper">
+            <nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-header animated bounceIn">
+            <a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a>
+        </div>
+        <div class="navbar-menu">
+            
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/posts" title="">文章</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/tags" title="">标签</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/categories" title="">目录</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/about" title="">关于</a>
+            
+            <a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a>
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile">
+     <div class="navbar-container">
+        <div class="navbar-header">
+            <div class="navbar-header-title animated bounceIn">
+                <a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="navbar-menu" id="mobile-menu">
+            
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/posts" title="">文章</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/tags" title="">标签</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/categories" title="">目录</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/about" title="">关于</a>
+            
+            <a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a>
+        </div>
+    </div>
+</nav><main class="main">
+                <div class="container">
+                    
+    
+    
+    
+
+    <article class="post-warp">
+        <h1 class="post-title animated flipInX">GAN基础</h1>
+
+        <div class="post-meta">
+            <div class="post-meta-main">
+                <a class="author" href="https://qiubinyang.github.io/" rel="author"><i class="fas fa-user-circle fa-fw"></i>KevinQiu&nbsp;</a>
+                <span class="post-category">
+                        收录于
+                        <i class="far fa-folder fa-fw"></i><a href="https://qiubinyang.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                            
+                    </span>
+            </div>
+            <div class="post-meta-other">
+                <i class="far fa-calendar-alt fa-fw"></i><time datetime=2019-12-17>2019-12-17</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>约 1466 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>预计阅读 3 分钟&nbsp;</div>
+        </div>
+
+        
+
+        <div class="post-toc" id="post-toc">
+                <h2 class="post-toc-title">目录</h2>
+                <div class="post-toc-content">
+                    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#structured-learning">Structured Learning</a></li>
+<li><a href="#basic-idea-of-gan">Basic Idea of GAN</a></li>
+<li><a href="#gan-as-structured-learning">GAN as Structured Learning</a></li>
+<li><a href="#为什么不能单g或单d">为什么不能单G或单D？</a>
+<ul>
+<li><a href="#单generator">单Generator</a></li>
+<li><a href="#所以这整套技术-单用generator少了什么东西-what-do-we-miss">所以这整套技术，单用Generator少了什么东西？What do we miss？</a></li>
+<li><a href="#一个非常重要的点">一个非常重要的点</a></li>
+<li><a href="#单discriminator">单Discriminator</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                </div>
+            </div>
+            <div class="post-toc-mobile" id="post-toc-mobile">
+                <details>
+                    <summary><div class="post-toc-title"><span>目录</span><span><i class="details icon fas fa-angle-down"></i></span></div></summary>
+                    <div class="post-toc-content">
+                        
+                        
+                        <nav id="TableOfContentsMobile">
+<ul>
+<li>
+<ul>
+<li><a href="#structured-learning">Structured Learning</a></li>
+<li><a href="#basic-idea-of-gan">Basic Idea of GAN</a></li>
+<li><a href="#gan-as-structured-learning">GAN as Structured Learning</a></li>
+<li><a href="#为什么不能单g或单d">为什么不能单G或单D？</a>
+<ul>
+<li><a href="#单generator">单Generator</a></li>
+<li><a href="#所以这整套技术-单用generator少了什么东西-what-do-we-miss">所以这整套技术，单用Generator少了什么东西？What do we miss？</a></li>
+<li><a href="#一个非常重要的点">一个非常重要的点</a></li>
+<li><a href="#单discriminator">单Discriminator</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                </details>
+            </div>
+
+        <div class="post-content">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+<a class="post-dummy-target" id="structured-learning"></a><h2>Structured Learning</h2>
+
+<p>ML is to find a function of f:
+$$
+  f:X \rightarrow Y
+$$</p>
+
+<ul>
+<li>Regression -&gt; scalar</li>
+<li>Classification -&gt; class (one-hot vector)</li>
+<li>Structured Learning -&gt;
+
+<ul>
+<li>Sequence</li>
+<li>语音识别</li>
+<li>NLP</li>
+<li>ChatBot</li>
+<li>Matrix</li>
+<li>Image2Image</li>
+<li>Graph</li>
+<li>Tree&hellip;</li>
+</ul></li>
+</ul>
+
+<a class="post-dummy-target" id="basic-idea-of-gan"></a><h2>Basic Idea of GAN</h2>
+
+<p>有两部分组成：</p>
+
+<ul>
+<li>生成器Generator</li>
+<li>判别器Discriminator</li>
+</ul>
+
+<p><center></p>
+
+
+<div class="mermaid">
+graph TD;
+  G
+  D
+</div>
+
+<p></center></p>
+
+<blockquote>
+<p>Generator</p>
+</blockquote>
+
+<p><center></p>
+
+
+<div class="mermaid">
+graph LR;
+  Vector-->Generator--High Dimensional Vector-->Image
+</div>
+
+<p></center></p>
+
+<p><center></p>
+
+
+<div class="mermaid">
+graph LR;
+  Vector-->Generator-->Sentence
+</div>
+
+<p></center></p>
+
+<p>准确的说，Input的Vector的每一个值应该会代表某一个特征</p>
+
+<blockquote>
+<p>Discriminator</p>
+</blockquote>
+
+<p><center></p>
+
+
+<div class="mermaid">
+graph TD;
+  T(Larger means more real);
+  T2(It`s a NN, or a function);
+  Image-->Discriminator-->Scalar;
+  subgraph B;
+    T2.->Discriminator
+  end;
+  subgraph C;
+    T.->Scalar;
+  end;
+</div>
+
+<p></center></p>
+
+<a class="post-dummy-target" id="gan-as-structured-learning"></a><h2>GAN as Structured Learning</h2>
+
+<p>首先，我们有一个第一代的Generator，然后他产生一些图片，然后我们把这些图片和一些真实的图片丢到第一代的Discriminator里面去学习，让第一代的Discriminator能够真实的分辨生成的图片和真实的图片，然后我们又有了第二代的Generator，第二代的Generator产生的图片，能够骗过第一代的Discriminator，此时，我们在训练第二代的Discriminator，依次类推。</p>
+
+<blockquote>
+<p>Algorithm</p>
+</blockquote>
+
+<ul>
+<li>Step 1 Fix generator G, and update discriminator D</li>
+</ul>
+
+<p><img src='https://blog-1300936968.cos.ap-shanghai.myqcloud.com/GANStep1.png' width=500 align=center /></p>
+
+<p>固定G，不断生成图片训练D，让D能够给真实图片高分，给生成图片低分。</p>
+
+<ul>
+<li>Step 2 Fix discriminator D, and update generator G</li>
+</ul>
+
+<p><img src='https://blog-1300936968.cos.ap-shanghai.myqcloud.com/GANStep2.png' width=500 align=center /></p>
+
+<p>固定D，训练G生成能使D打高分的图片。</p>
+
+<p>在第二步的时候，我们把G和D当做一个巨大的网络，中间有一个hidden layer会输出一个Flatten图片的大小。然后每次更新参数，只更新大网络前面G部分的网络参数。</p>
+
+<blockquote>
+<p>Algorithm in Fake Code</p>
+</blockquote>
+
+<p><img src='https://blog-1300936968.cos.ap-shanghai.myqcloud.com/GAN Algorithm.png' width=500 align=center /></p>
+
+<a class="post-dummy-target" id="为什么不能单g或单d"></a><h2>为什么不能单G或单D？</h2>
+
+<ul>
+<li>Generator是一个<strong>Bottom UP</strong>的问题。即Generator靠生成部件来组成整体，缺乏大局观，但是部件生成工作做得不错。</li>
+<li>Discriminator是一个<strong>Top Down</strong>的问题。即把控大局它很在行，但是很难做generate。</li>
+<li>需要他们俩结合起来，就是GAN</li>
+</ul>
+
+<a class="post-dummy-target" id="单generator"></a><h3>单Generator</h3>
+
+<p>未尝不是没有解决办法的。可以使用Auto-Encoder来解决。</p>
+
+<p>其实训练好的Auto-Encoder中的Decoder部分就可以作为一个Generator来用。</p>
+
+<p><center></p>
+
+<p>
+<div class="mermaid">
+graph LR;
+  Image --Encoder--> Vector --Decoder--> Image
+</div>
+</center></p>
+
+<p>我们希望的是，AE能够学到的就是各个部分的细节，所以按道理来说，特征向量的部分改变应该会有对应的部件改变。也就是说：</p>
+
+<p><center></p>
+
+<p>
+<div class="mermaid">
+graph LR;
+  G(NN Generator)
+  unk[0.5*a + 0.5*b]
+  a --> G --> Image1
+  b --> G --> Image2
+  unk --> G --> ?
+</div>
+</center></p>
+
+<p>如果用AE的话会发现$0.5 \times a + 0.5 \times b$会出现噪声，或者根本不是想要的结果。<strong>毕竟NN model又不是线性的。</strong></p>
+
+<p>那要如何解决这个问题呢？</p>
+
+<blockquote>
+<p><strong>VAE：Variational Auto-Encoder</strong></p>
+</blockquote>
+
+<a class="post-dummy-target" id="所以这整套技术-单用generator少了什么东西-what-do-we-miss"></a><h3>所以这整套技术，单用Generator少了什么东西？What do we miss？</h3>
+
+<p>我们在把这整个过程当作Supervised Learning来Train的时候，追求的目标就是：<strong>和目标越像越好</strong>。但是如下情况：</p>
+
+<p><img src="https://blog-1300936968.cos.ap-shanghai.myqcloud.com/20191217162851.png" width=300 align=center/></p>
+
+<p>error虽然少，但是却不合乎人手写数字的常理。因为各个neural之间没有联系。</p>
+
+<p><img src="https://blog-1300936968.cos.ap-shanghai.myqcloud.com/20191217163220.png" width=200 align=center/></p>
+
+<p>那么为了产生联系，可以多加几个layer，让neural在后面几层产生联系，所以，就会发现，单Generator要更大的network，才可以和一个简单的GAN的效果一样。</p>
+
+<a class="post-dummy-target" id="一个非常重要的点"></a><h3>一个非常重要的点</h3>
+
+<p><img src='https://blog-1300936968.cos.ap-shanghai.myqcloud.com/20191217164441.png' width=400 align=center /></p>
+
+<p>蓝色的点都是VAE生成的点，可以看到在中间过渡部分也产生了不少的蓝色点位。这就是VAE的问题所在。那么在异常检测的问题中也会存在这个问题。如果数据量少，或者数据分布不均匀，那么用AE或VAE学的模型就会学不到说中间的过渡部分的不好或者好。</p>
+
+<a class="post-dummy-target" id="单discriminator"></a><h3>单Discriminator</h3>
+
+<p>Discriminator经过Supervised Learning后可以很好的判断生成的结果好还是不好，那么要用他做Generator也不是不可以的。只不过得穷举。。。
+$$\widetilde{x} = \underset{x \in X}{argmax} D(x)$$
+一直找到让D分数很高的图片就行。
+&gt;你还别说，Graphical Model里面很多其实都是用Discriminator来当Generator用的。在GAN里面就是用Generator来替代了</p>
+
+        </div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>本文于 2019-12-17 更新</span>
+            </div>
+            <div class="post-info-license">
+                
+            </div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md">
+                
+                    
+                        <span><a class="link-to-markdown" href="https://qiubinyang.github.io/2019/12/gan/index.md" target="_blank">阅读原始文档</a></span>
+                    
+                
+            </div>
+            <div class="post-info-share">
+                
+                    <span>
+    
+        <a href="//twitter.com/share?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f12%2fgan%2f&amp;text=GAN%e5%9f%ba%e7%a1%80&amp;via=" target="_blank" title="Share on Twitter">
+            <i class="fab fa-twitter fa-fw"></i>
+        </a>
+    
+    
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fqiubinyang.github.io%2f2019%2f12%2fgan%2f" target="_blank" title="Share on Facebook">
+            <i class="fab fa-facebook-square fa-fw"></i>
+        </a>
+    
+    
+        <a href="//reddit.com/submit?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f12%2fgan%2f&amp;title=GAN%e5%9f%ba%e7%a1%80" target="_blank" title="Share on Reddit">
+            <i class="fab fa-reddit fa-fw"></i>
+        </a>
+    
+    
+    
+    
+    
+    
+    
+    
+        <a href="//service.weibo.com/share/share.php?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f12%2fgan%2f&amp;appkey=&amp;title=GAN%e5%9f%ba%e7%a1%80" target="_blank" title="Share on Weibo">
+            <i class="fab fa-weibo fa-fw"></i>
+        </a>
+    
+</span>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section>
+            
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/"><i class="fas fa-tag fa-fw"></i>基础知识笔记</a>
+                    </span>
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><i class="fas fa-tag fa-fw"></i>机器学习</a>
+                    </span>
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/gan/"><i class="fas fa-tag fa-fw"></i>GAN</a>
+                    </span>
+                
+            
+        </section>
+        <section>
+            <span><a href="javascript:window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="https://qiubinyang.github.io/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+            <a href="https://qiubinyang.github.io/2019/12/hugo%E4%B8%BB%E9%A2%98bug%E4%BF%AE%E5%A4%8D/" class="prev" rel="prev" title="Hugo主题Bug修复"><i class="fas fa-angle-left fa-fw"></i>Hugo主题Bug修复</a>
+        
+        
+    </div>
+</div>
+
+        <div class="post-comment">
+            
+        </div>
+    </article></div>
+            </main>
+            <footer class="footer">
+    <div class="copyright">
+        <div class="copyright-line">
+            由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+        <div class="copyright-line">
+            <i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://qiubinyang.github.io/">KevinQiu</a></span><span class="license">&nbsp;|&nbsp;<a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+    </div>
+</footer>
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+<script src="/js/lib/jquery/jquery.slim.min.min.js"></script>
+<script src="/js/lib/lazysizes/lazysizes.min.min.js"></script>
+<script src="/js/lib/smooth-scroll/smooth-scroll.polyfills.min.min.js"></script><script>window.scroll = new SmoothScroll('[data-scroll]', {speed: 300, speedAsDuration: true});</script>
+
+
+    
+    
+        
+    
+
+    
+        <script src="/js/lib/mermaid/mermaid.min.min.js"></script><script>mermaid.initialize({startOnLoad: true, theme: null,});</script>
+    
+
+    
+        <link rel="stylesheet" href="/css/lib/katex/katex.min.min.css"><script src="/js/lib/katex/katex.min.min.js"></script><script defer src="/js/lib/katex/auto-render.min.min.js" onload="renderMathInElement(document.body);"></script>
+    
+
+    
+
+    
+
+
+
+
+
+
+<script src="/js/blog.min.js"></script>
+
+
+    
+</div>
+        <a href="#" class="dynamic-to-top" id="dynamic-to-top" data-scroll><span>&nbsp;</span></a>
+    </body>
+</html>
