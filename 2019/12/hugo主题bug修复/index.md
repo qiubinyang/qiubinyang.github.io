@@ -35,6 +35,7 @@
 
 ### 在layouts/partials/head.html最后引入math.html
 >在head.html的最后加入以下代码
+
 ```html
 {{ if or .Params.math .Site.Params.math }}
     {{ partial "math.html" . }}
@@ -47,6 +48,7 @@
 
 ### 在layouts/partials/scripts.html中把Katex替换为MathJax
 >1. 在Scripts.html中第26行有一段代码为引入katex，直接去掉
+
 ```html
 <!-- KaTeX https://github.com/KaTeX/KaTeX -->
 {{ $katex_css := "" }}
@@ -74,6 +76,7 @@
 ```
 
 >2. 将以上整体换为以下代码后，需要去config.toml中修改katex的cdn为mathjax的cdn，并且在js文件夹中加入MathJax的js：
+
 ```html
 {{ $mathjax_js := "" }}
 {{ if eq (getenv "HUGO_ENV") "production" | and .Site.Params.cdn.mathjax_js }}
@@ -85,26 +88,25 @@
 ```
 
 >2. 不过太麻烦了。。。以上是为了规范的将MathJax替代，如果仅仅为了方便，可以直接在math.html中写以下代码
+
 ```html
-<script type="text/javascript" async src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-MathJax.Hub.Config({
-  tex2jax: {
-    inlineMath: [['$','$'], ['\\(','\\)']],
-    displayMath: [['$$','$$'], ['\[','\]']],
-    processEscapes: true,
-    processEnvironments: true,
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-    TeX: { equationNumbers: { autoNumber: "AMS" },
-         extensions: ["AMSmath.js", "AMSsymbols.js"] }
-  }
-});
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i = 0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-});
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$'], ['\[','\]']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            TeX: {
+                equationNumbers: { autoNumber: "AMS" },
+                extensions: ["AMSmath.js", "AMSsymbols.js"]
+            }
+        }
+    });
 </script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 <style>
 code.has-jax {
     font: inherit;
@@ -114,6 +116,8 @@ code.has-jax {
     color: #515151;
 }
 </style>
+
+
 ```
 最后还需要在CSS中对这种特殊的MathJax进行样式处理，否则行内公式的显示会很奇怪。
 
@@ -133,6 +137,7 @@ code.has-jax {
 
 ### 在layouts/partials/head.html最后引入math.html
 >在head.html的最后加入以下代码
+
 ```html
 {{ if or .Params.math .Site.Params.math }}
     {{ partial "math.html" . }}

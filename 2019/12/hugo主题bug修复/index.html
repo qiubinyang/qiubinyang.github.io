@@ -41,7 +41,7 @@
     
         "keywords": "Bug, 其他",
     
-    "wordcount":  1394 ,
+    "wordcount":  1371 ,
     "url": "https:\/\/qiubinyang.github.io\/2019\/12\/hugo%E4%B8%BB%E9%A2%98bug%E4%BF%AE%E5%A4%8D\/",
     
         "datePublished": "2019-12-11T04:24:29\x2b08:00",
@@ -74,16 +74,33 @@
 <link rel="stylesheet" href="/css/lib/animate/animate.min.min.css">
 
 
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        renderMathInElement(document.body, {
-            delimiters: [
-              {left: "$$", right: "$$", display: true},
-              {left: "$", right: "$", display: false}
-            ]
-        });
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$'], ['\[','\]']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            TeX: {
+                equationNumbers: { autoNumber: "AMS" },
+                extensions: ["AMSmath.js", "AMSsymbols.js"]
+            }
+        }
     });
 </script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+
 
     </head>
     <body>
@@ -157,7 +174,7 @@
             </div>
             <div class="post-meta-other">
                 <i class="far fa-calendar-alt fa-fw"></i><time datetime=2019-12-11>2019-12-11</time>&nbsp;
-                <i class="fas fa-pencil-alt fa-fw"></i>约 1394 字&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>约 1371 字&nbsp;
                 <i class="far fa-clock fa-fw"></i>预计阅读 3 分钟&nbsp;</div>
         </div>
 
@@ -297,6 +314,7 @@
 
 <blockquote>
 <p>在head.html的最后加入以下代码</p>
+</blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-html" data-lang="html"><span class="lnt">1
@@ -310,7 +328,6 @@
 </div>
 </div>
 <p>可通过全局math或文章头部math变量控制是否需要文章中公式的渲染。</p>
-</blockquote>
 
 <a class="post-dummy-target" id="换成mathjax"></a><h2>换成MathJax</h2>
 
@@ -322,7 +339,9 @@
 
 <blockquote>
 <ol>
-<li><p>在Scripts.html中第26行有一段代码为引入katex，直接去掉</p>
+<li>在Scripts.html中第26行有一段代码为引入katex，直接去掉</li>
+</ol>
+</blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-html" data-lang="html"><span class="lnt"> 1
@@ -353,30 +372,33 @@
 <pre class="chroma"><code class="language-html" data-lang="html"><span class="c">&lt;!-- KaTeX https://github.com/KaTeX/KaTeX --&gt;</span>
 {{ $katex_css := &#34;&#34; }}
 {{ if eq (getenv &#34;HUGO_ENV&#34;) &#34;production&#34; | and .Site.Params.cdn.katex_css }}
-{{ $katex_css = .Site.Params.cdn.katex_css }}
+    {{ $katex_css = .Site.Params.cdn.katex_css }}
 {{ else }}
-{{ $res := resources.Get &#34;css/lib/katex/katex.min.css&#34; | resources.Minify }}
-{{ $katex_css = printf &#34;<span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">\&#34;stylesheet\&#34;</span> <span class="na">href</span><span class="o">=</span><span class="s">\&#34;%s\&#34;</span><span class="p">&gt;</span>&#34; $res.RelPermalink }}
+    {{ $res := resources.Get &#34;css/lib/katex/katex.min.css&#34; | resources.Minify }}
+    {{ $katex_css = printf &#34;<span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">\&#34;stylesheet\&#34;</span> <span class="na">href</span><span class="o">=</span><span class="s">\&#34;%s\&#34;</span><span class="p">&gt;</span>&#34; $res.RelPermalink }}
 {{ end }}
 {{ $katex_js := &#34;&#34; }}
 {{ if eq (getenv &#34;HUGO_ENV&#34;) &#34;production&#34; | and .Site.Params.cdn.katex_js }}
-{{ $katex_js = .Site.Params.cdn.katex_js }}
+    {{ $katex_js = .Site.Params.cdn.katex_js }}
 {{ else }}
-{{ $res := resources.Get &#34;js/lib/katex/katex.min.js&#34; | resources.Minify }}
-{{ $katex_js = printf &#34;<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">\&#34;%s\&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>&#34; $res.RelPermalink }}
+    {{ $res := resources.Get &#34;js/lib/katex/katex.min.js&#34; | resources.Minify }}
+    {{ $katex_js = printf &#34;<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">\&#34;%s\&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>&#34; $res.RelPermalink }}
 {{ end }}
 {{ $katex_auto_render_js := &#34;&#34; }}
 {{ if eq (getenv &#34;HUGO_ENV&#34;) &#34;production&#34; | and .Site.Params.cdn.katex_auto_render_js }}
-{{ $katex_auto_render_js = .Site.Params.cdn.katex_auto_render_js }}
+    {{ $katex_auto_render_js = .Site.Params.cdn.katex_auto_render_js }}
 {{ else }}
-{{ $res := resources.Get &#34;js/lib/katex/auto-render.min.js&#34; | resources.Minify }}
-{{ $katex_auto_render_js = printf &#34;<span class="p">&lt;</span><span class="nt">script</span> <span class="na">defer</span> <span class="na">src</span><span class="o">=</span><span class="s">\&#34;%s\&#34;</span> <span class="na">onload</span><span class="o">=</span><span class="s">\&#34;renderMathInElement(document.body);\&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>&#34; $res.RelPermalink }}
+    {{ $res := resources.Get &#34;js/lib/katex/auto-render.min.js&#34; | resources.Minify }}
+    {{ $katex_auto_render_js = printf &#34;<span class="p">&lt;</span><span class="nt">script</span> <span class="na">defer</span> <span class="na">src</span><span class="o">=</span><span class="s">\&#34;%s\&#34;</span> <span class="na">onload</span><span class="o">=</span><span class="s">\&#34;renderMathInElement(document.body);\&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>&#34; $res.RelPermalink }}
 {{ end }}
 {{ $katex := delimit (slice $katex_css $katex_js $katex_auto_render_js) &#34;&#34; }}</code></pre></td></tr></table>
 </div>
-</div></li>
-
-<li><p>将以上整体换为以下代码后，需要去config.toml中修改katex的cdn为mathjax的cdn，并且在js文件夹中加入MathJax的js：</p>
+</div>
+<blockquote>
+<ol>
+<li>将以上整体换为以下代码后，需要去config.toml中修改katex的cdn为mathjax的cdn，并且在js文件夹中加入MathJax的js：</li>
+</ol>
+</blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-html" data-lang="html"><span class="lnt">1
@@ -390,15 +412,18 @@
 <td class="lntd">
 <pre class="chroma"><code class="language-html" data-lang="html">{{ $mathjax_js := &#34;&#34; }}
 {{ if eq (getenv &#34;HUGO_ENV&#34;) &#34;production&#34; | and .Site.Params.cdn.mathjax_js }}
-{{ $mathjax_js = .Site.Params.cdn.mathjax_js }}
+    {{ $mathjax_js = .Site.Params.cdn.mathjax_js }}
 {{ else }}
-{{ $res := resources.Get &#34;js/lib/mathjax/mathjax.min.js&#34; | resources.Minify }}
-{{ $mathjax_js = printf &#34;<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">\&#34;%s\&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>&#34; $res.RelPermalink }}
+    {{ $res := resources.Get &#34;js/lib/mathjax/mathjax.min.js&#34; | resources.Minify }}
+    {{ $mathjax_js = printf &#34;<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">\&#34;%s\&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>&#34; $res.RelPermalink }}
 {{ end }}</code></pre></td></tr></table>
 </div>
-</div></li>
-
-<li><p>不过太麻烦了。。。以上是为了规范的将MathJax替代，如果仅仅为了方便，可以直接在math.html中写以下代码</p>
+</div>
+<blockquote>
+<ol>
+<li>不过太麻烦了。。。以上是为了规范的将MathJax替代，如果仅仅为了方便，可以直接在math.html中写以下代码</li>
+</ol>
+</blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-html" data-lang="html"><span class="lnt"> 1
@@ -427,43 +452,37 @@
 </span><span class="lnt">24
 </span><span class="lnt">25
 </span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span> <span class="na">async</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#34;</span><span class="p">&gt;</span>
-<span class="nx">MathJax</span><span class="p">.</span><span class="nx">Hub</span><span class="p">.</span><span class="nx">Config</span><span class="p">({</span>
-<span class="nx">tex2jax</span><span class="o">:</span> <span class="p">{</span>
-<span class="nx">inlineMath</span><span class="o">:</span> <span class="p">[[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span><span class="s1">&#39;$&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;\\(&#39;</span><span class="p">,</span><span class="s1">&#39;\\)&#39;</span><span class="p">]],</span>
-<span class="nx">displayMath</span><span class="o">:</span> <span class="p">[[</span><span class="s1">&#39;$$&#39;</span><span class="p">,</span><span class="s1">&#39;$$&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;\[&#39;</span><span class="p">,</span><span class="s1">&#39;\]&#39;</span><span class="p">]],</span>
-<span class="nx">processEscapes</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-<span class="nx">processEnvironments</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-<span class="nx">skipTags</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;script&#39;</span><span class="p">,</span> <span class="s1">&#39;noscript&#39;</span><span class="p">,</span> <span class="s1">&#39;style&#39;</span><span class="p">,</span> <span class="s1">&#39;textarea&#39;</span><span class="p">,</span> <span class="s1">&#39;pre&#39;</span><span class="p">],</span>
-<span class="nx">TeX</span><span class="o">:</span> <span class="p">{</span> <span class="nx">equationNumbers</span><span class="o">:</span> <span class="p">{</span> <span class="nx">autoNumber</span><span class="o">:</span> <span class="s2">&#34;AMS&#34;</span> <span class="p">},</span>
-     <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span><span class="s2">&#34;AMSmath.js&#34;</span><span class="p">,</span> <span class="s2">&#34;AMSsymbols.js&#34;</span><span class="p">]</span> <span class="p">}</span>
-<span class="p">}</span>
-<span class="p">});</span>
-<span class="nx">MathJax</span><span class="p">.</span><span class="nx">Hub</span><span class="p">.</span><span class="nx">Queue</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-<span class="kd">var</span> <span class="nx">all</span> <span class="o">=</span> <span class="nx">MathJax</span><span class="p">.</span><span class="nx">Hub</span><span class="p">.</span><span class="nx">getAllJax</span><span class="p">(),</span> <span class="nx">i</span><span class="p">;</span>
-<span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">all</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">all</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">SourceElement</span><span class="p">().</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; has-jax&#39;</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="p">});</span>
+<pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/x-mathjax-config&#34;</span><span class="p">&gt;</span>
+    <span class="nx">MathJax</span><span class="p">.</span><span class="nx">Hub</span><span class="p">.</span><span class="nx">Config</span><span class="p">({</span>
+        <span class="nx">tex2jax</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">inlineMath</span><span class="o">:</span> <span class="p">[[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span><span class="s1">&#39;$&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;\\(&#39;</span><span class="p">,</span><span class="s1">&#39;\\)&#39;</span><span class="p">]],</span>
+            <span class="nx">displayMath</span><span class="o">:</span> <span class="p">[[</span><span class="s1">&#39;$$&#39;</span><span class="p">,</span><span class="s1">&#39;$$&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;\[&#39;</span><span class="p">,</span><span class="s1">&#39;\]&#39;</span><span class="p">]],</span>
+            <span class="nx">processEscapes</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">processEnvironments</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">skipTags</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;script&#39;</span><span class="p">,</span> <span class="s1">&#39;noscript&#39;</span><span class="p">,</span> <span class="s1">&#39;style&#39;</span><span class="p">,</span> <span class="s1">&#39;textarea&#39;</span><span class="p">,</span> <span class="s1">&#39;pre&#39;</span><span class="p">],</span>
+            <span class="nx">TeX</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">equationNumbers</span><span class="o">:</span> <span class="p">{</span> <span class="nx">autoNumber</span><span class="o">:</span> <span class="s2">&#34;AMS&#34;</span> <span class="p">},</span>
+                <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span><span class="s2">&#34;AMSmath.js&#34;</span><span class="p">,</span> <span class="s2">&#34;AMSsymbols.js&#34;</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
 <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span> <span class="na">async</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
 <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
 <span class="nt">code</span><span class="p">.</span><span class="nc">has-jax</span> <span class="p">{</span>
-<span class="k">font</span><span class="p">:</span> <span class="kc">inherit</span><span class="p">;</span>
-<span class="k">font-size</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
-<span class="k">background</span><span class="p">:</span> <span class="kc">inherit</span><span class="p">;</span>
-<span class="k">border</span><span class="p">:</span> <span class="kc">inherit</span><span class="p">;</span>
-<span class="k">color</span><span class="p">:</span> <span class="mh">#515151</span><span class="p">;</span>
+    <span class="k">font</span><span class="p">:</span> <span class="kc">inherit</span><span class="p">;</span>
+    <span class="k">font-size</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+    <span class="k">background</span><span class="p">:</span> <span class="kc">inherit</span><span class="p">;</span>
+    <span class="k">border</span><span class="p">:</span> <span class="kc">inherit</span><span class="p">;</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#515151</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span></code></pre></td></tr></table>
 </div>
 </div>
-<p>最后还需要在CSS中对这种特殊的MathJax进行样式处理，否则行内公式的显示会很奇怪。</p></li>
-</ol>
-</blockquote>
+<p>最后还需要在CSS中对这种特殊的MathJax进行样式处理，否则行内公式的显示会很奇怪。</p>
 
 <a class="post-dummy-target" id="在layouts-partials中增加math-html-1"></a><h3>在layouts/partials中增加math.html</h3>
 <div class="highlight"><div class="chroma">
@@ -496,6 +515,7 @@
 
 <blockquote>
 <p>在head.html的最后加入以下代码</p>
+</blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-html" data-lang="html"><span class="lnt">1
@@ -509,7 +529,6 @@
 </div>
 </div>
 <p>可通过全局math或文章头部math变量控制是否需要文章中公式的渲染。</p>
-</blockquote>
 
         </div>
 
@@ -627,21 +646,6 @@
     
 
 
-
-
-
-    
-    
-
-
-
-    
-    
-
-
-
-    
-    
 
 
 

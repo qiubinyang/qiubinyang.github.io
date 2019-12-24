@@ -7,6 +7,7 @@
 <meta name="robots" content="noodp" />
 <meta name="Description" content="Generative Adversarial Network（对抗生成网络）基础介绍">
 <link rel="prev" href="https://qiubinyang.github.io/2019/12/hugo%E4%B8%BB%E9%A2%98bug%E4%BF%AE%E5%A4%8D/" />
+<link rel="next" href="https://qiubinyang.github.io/2019/12/jacobian/" />
 <link rel="canonical" href="https://qiubinyang.github.io/2019/12/gan/" />
 <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -73,16 +74,33 @@
 <link rel="stylesheet" href="/css/lib/animate/animate.min.min.css">
 
 
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        renderMathInElement(document.body, {
-            delimiters: [
-              {left: "$$", right: "$$", display: true},
-              {left: "$", right: "$", display: false}
-            ]
-        });
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$'], ['\[','\]']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            TeX: {
+                equationNumbers: { autoNumber: "AMS" },
+                extensions: ["AMSmath.js", "AMSsymbols.js"]
+            }
+        }
     });
 </script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+
 
     </head>
     <body>
@@ -517,6 +535,8 @@ $$\widetilde{x} = \underset{x \in X}{argmax} D(x)$$
             <a href="https://qiubinyang.github.io/2019/12/hugo%E4%B8%BB%E9%A2%98bug%E4%BF%AE%E5%A4%8D/" class="prev" rel="prev" title="Hugo主题Bug修复"><i class="fas fa-angle-left fa-fw"></i>Hugo主题Bug修复</a>
         
         
+            <a href="https://qiubinyang.github.io/2019/12/jacobian/" class="next" rel="next" title="Jacobian Matrix">Jacobian Matrix<i class="fas fa-angle-right fa-fw"></i></a>
+        
     </div>
 </div>
 
@@ -552,21 +572,6 @@ $$\widetilde{x} = \underset{x \in X}{argmax} D(x)$$
     
 
 
-
-
-
-    
-    
-
-
-
-    
-    
-
-
-
-    
-    
 
 
 

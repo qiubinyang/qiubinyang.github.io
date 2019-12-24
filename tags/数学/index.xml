@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数学 on KevinQiu`s Blog</title>
+    <link>https://qiubinyang.github.io/tags/%E6%95%B0%E5%AD%A6/</link>
+    <description>Recent content in 数学 on KevinQiu`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Wed, 25 Dec 2019 01:40:16 +0800</lastBuildDate>
+    
+	<atom:link href="https://qiubinyang.github.io/tags/%E6%95%B0%E5%AD%A6/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Jacobian Matrix</title>
+      <link>https://qiubinyang.github.io/2019/12/jacobian/</link>
+      <pubDate>Wed, 25 Dec 2019 01:40:16 +0800</pubDate>
+      
+      <guid>https://qiubinyang.github.io/2019/12/jacobian/</guid>
+      <description>Jacobian Matrix 向量分析中,雅可比矩阵是一阶偏导数以一定方式排列成的矩阵。在代数几何中, 代数曲线的雅可比量表示雅可比簇：伴随该曲线的一个代数群, 曲线可以</description>
+    </item>
+    
+  </channel>
+</rss>

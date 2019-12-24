@@ -3,7 +3,119 @@
         <url>
             <loc>https://qiubinyang.github.io/categories/</loc>
             
-                <lastmod>2019-12-17T18:48:28+08:00</lastmod>
+                <lastmod>2019-12-25T01:40:16+08:00</lastmod>
+            
+            
+                <changefreq>weekly</changefreq>
+            
+            
+                <priority>0.5</priority>
+            
+            
+        </url>
+    
+        <url>
+            <loc>https://qiubinyang.github.io/2019/12/jacobian/</loc>
+            
+                <lastmod>2019-12-25T01:40:16+08:00</lastmod>
+            
+            
+                <changefreq>weekly</changefreq>
+            
+            
+                <priority>0.5</priority>
+            
+            
+        </url>
+    
+        <url>
+            <loc>https://qiubinyang.github.io/</loc>
+            
+                <lastmod>2019-12-25T01:40:16+08:00</lastmod>
+            
+            
+                <changefreq>weekly</changefreq>
+            
+            
+                <priority>0.5</priority>
+            
+            
+        </url>
+    
+        <url>
+            <loc>https://qiubinyang.github.io/posts/</loc>
+            
+                <lastmod>2019-12-25T01:40:16+08:00</lastmod>
+            
+            
+                <changefreq>weekly</changefreq>
+            
+            
+                <priority>0.5</priority>
+            
+            
+        </url>
+    
+        <url>
+            <loc>https://qiubinyang.github.io/tags/</loc>
+            
+                <lastmod>2019-12-25T01:40:16+08:00</lastmod>
+            
+            
+                <changefreq>weekly</changefreq>
+            
+            
+                <priority>0.5</priority>
+            
+            
+        </url>
+    
+        <url>
+            <loc>https://qiubinyang.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/</loc>
+            
+                <lastmod>2019-12-25T01:40:16+08:00</lastmod>
+            
+            
+                <changefreq>weekly</changefreq>
+            
+            
+                <priority>0.5</priority>
+            
+            
+        </url>
+    
+        <url>
+            <loc>https://qiubinyang.github.io/tags/%E6%95%B0%E5%AD%A6/</loc>
+            
+                <lastmod>2019-12-25T01:40:16+08:00</lastmod>
+            
+            
+                <changefreq>weekly</changefreq>
+            
+            
+                <priority>0.5</priority>
+            
+            
+        </url>
+    
+        <url>
+            <loc>https://qiubinyang.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
+            
+                <lastmod>2019-12-25T01:40:16+08:00</lastmod>
+            
+            
+                <changefreq>weekly</changefreq>
+            
+            
+                <priority>0.5</priority>
+            
+            
+        </url>
+    
+        <url>
+            <loc>https://qiubinyang.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
+            
+                <lastmod>2019-12-25T01:40:16+08:00</lastmod>
             
             
                 <changefreq>weekly</changefreq>
@@ -30,90 +142,6 @@
     
         <url>
             <loc>https://qiubinyang.github.io/2019/12/gan/</loc>
-            
-                <lastmod>2019-12-17T18:48:28+08:00</lastmod>
-            
-            
-                <changefreq>weekly</changefreq>
-            
-            
-                <priority>0.5</priority>
-            
-            
-        </url>
-    
-        <url>
-            <loc>https://qiubinyang.github.io/</loc>
-            
-                <lastmod>2019-12-17T18:48:28+08:00</lastmod>
-            
-            
-                <changefreq>weekly</changefreq>
-            
-            
-                <priority>0.5</priority>
-            
-            
-        </url>
-    
-        <url>
-            <loc>https://qiubinyang.github.io/posts/</loc>
-            
-                <lastmod>2019-12-17T18:48:28+08:00</lastmod>
-            
-            
-                <changefreq>weekly</changefreq>
-            
-            
-                <priority>0.5</priority>
-            
-            
-        </url>
-    
-        <url>
-            <loc>https://qiubinyang.github.io/tags/</loc>
-            
-                <lastmod>2019-12-17T18:48:28+08:00</lastmod>
-            
-            
-                <changefreq>weekly</changefreq>
-            
-            
-                <priority>0.5</priority>
-            
-            
-        </url>
-    
-        <url>
-            <loc>https://qiubinyang.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/</loc>
-            
-                <lastmod>2019-12-17T18:48:28+08:00</lastmod>
-            
-            
-                <changefreq>weekly</changefreq>
-            
-            
-                <priority>0.5</priority>
-            
-            
-        </url>
-    
-        <url>
-            <loc>https://qiubinyang.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
-            
-                <lastmod>2019-12-17T18:48:28+08:00</lastmod>
-            
-            
-                <changefreq>weekly</changefreq>
-            
-            
-                <priority>0.5</priority>
-            
-            
-        </url>
-    
-        <url>
-            <loc>https://qiubinyang.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
             
                 <lastmod>2019-12-17T18:48:28+08:00</lastmod>
             
