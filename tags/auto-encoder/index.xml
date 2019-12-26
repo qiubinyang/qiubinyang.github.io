@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Auto-Encoder on KevinQiu`s Blog</title>
+    <link>https://qiubinyang.github.io/tags/auto-encoder/</link>
+    <description>Recent content in Auto-Encoder on KevinQiu`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Thu, 26 Dec 2019 22:01:11 +0800</lastBuildDate>
+    
+	<atom:link href="https://qiubinyang.github.io/tags/auto-encoder/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Auto-Encoder总结</title>
+      <link>https://qiubinyang.github.io/2019/12/ae/</link>
+      <pubDate>Thu, 26 Dec 2019 22:01:11 +0800</pubDate>
+      
+      <guid>https://qiubinyang.github.io/2019/12/ae/</guid>
+      <description>Auto-Encoder是一种无监督的学习算法，主要用于数据的降维或者特征的抽取 一个Encoder和一个Decoder组成，整个训练过程就是</description>
+    </item>
+    
+  </channel>
+</rss>

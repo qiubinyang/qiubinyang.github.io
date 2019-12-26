@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Auto-Encoder总结 | KevinQiu`s Blog</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noodp" />
+<meta name="Description" content="Auto-Encoder（自编码器）总结">
+<link rel="prev" href="https://qiubinyang.github.io/2019/12/jacobian/" />
+<link rel="canonical" href="https://qiubinyang.github.io/2019/12/ae/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Auto-Encoder总结"/>
+<meta name="twitter:description" content="Auto-Encoder（自编码器）总结"/>
+<script type="application/ld+json">
+    {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Auto-Encoder总结",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https:\/\/qiubinyang.github.io\/2019\/12\/ae\/"
+    },
+    
+        "image": {
+            "@type": "ImageObject",
+            "url": "https:\/\/qiubinyang.github.io\/cover.png",
+            "width":  800 ,
+            "height":  600 
+        },
+    
+    "genre": "posts",
+    
+        "keywords": "基础知识笔记, 机器学习, Auto-Encoder",
+    
+    "wordcount":  3290 ,
+    "url": "https:\/\/qiubinyang.github.io\/2019\/12\/ae\/",
+    
+        "datePublished": "2019-12-26T22:01:11\x2b08:00",
+    
+    
+        "dateModified": "2019-12-26T22:01:11\x2b08:00",
+    
+    
+        "license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.",
+    
+    
+        "publisher": {
+            "@type": "Organization",
+            "name": "XXXX",
+            "logo": {
+            "@type": "ImageObject",
+            "url": "https:\/\/qiubinyang.github.io\/logo.png",
+            "width":  127 ,
+            "height":  40 
+            }
+        },
+    
+    
+    "description": "Auto-Encoder（自编码器）总结"
+    }
+    </script>
+<link rel="stylesheet" href="/css/style.min.css">
+<link rel="stylesheet" href="/css/lib/fontawesome-free/all.min.min.css">
+
+<link rel="stylesheet" href="/css/lib/animate/animate.min.min.css">
+
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$'], ['\[','\]']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            TeX: {
+                equationNumbers: { autoNumber: "AMS" },
+                extensions: ["AMSmath.js", "AMSsymbols.js"]
+            }
+        }
+    });
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<style>
+.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+
+
+    </head>
+    <body>
+        <script>
+            window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            window.isDark && document.body.classList.add('dark-theme');
+        </script>
+        <div class="wrapper">
+            <nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-header animated bounceIn">
+            <a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a>
+        </div>
+        <div class="navbar-menu">
+            
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/posts" title="">文章</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/tags" title="">标签</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/categories" title="">目录</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/about" title="">关于</a>
+            
+            <a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a>
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile">
+     <div class="navbar-container">
+        <div class="navbar-header">
+            <div class="navbar-header-title animated bounceIn">
+                <a href="https://qiubinyang.github.io/">KevinQiu`s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="navbar-menu" id="mobile-menu">
+            
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/posts" title="">文章</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/tags" title="">标签</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/categories" title="">目录</a>
+            
+                <a class="menu-item" href="https://qiubinyang.github.io/about" title="">关于</a>
+            
+            <a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a>
+        </div>
+    </div>
+</nav><main class="main">
+                <div class="container">
+                    
+    
+    
+    
+
+    <article class="post-warp">
+        <h1 class="post-title animated flipInX">Auto-Encoder总结</h1>
+
+        <div class="post-meta">
+            <div class="post-meta-main">
+                <a class="author" href="https://qiubinyang.github.io/" rel="author"><i class="fas fa-user-circle fa-fw"></i>KevinQiu&nbsp;</a>
+                <span class="post-category">
+                        收录于
+                        <i class="far fa-folder fa-fw"></i><a href="https://qiubinyang.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                            
+                    </span>
+            </div>
+            <div class="post-meta-other">
+                <i class="far fa-calendar-alt fa-fw"></i><time datetime=2019-12-26>2019-12-26</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>约 3290 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>预计阅读 7 分钟&nbsp;</div>
+        </div>
+
+        
+
+        <div class="post-toc" id="post-toc">
+                <h2 class="post-toc-title">目录</h2>
+                <div class="post-toc-content">
+                    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#用ae来做预训练">用AE来做预训练</a></li>
+<li><a href="#de-noising-auto-encoder去噪自动编码器-dae">De-noising Auto-Encoder去噪自动编码器(DAE)</a></li>
+<li><a href="#contractive-auto-encoder压缩自动编码器-cae">Contractive Auto-Encoder压缩自动编码器(CAE)</a></li>
+<li><a href="#sparse-autoencoder稀疏自编码器-sae">Sparse AutoEncoder稀疏自编码器(SAE)</a>
+<ul>
+<li><a href="#tensorflow实现">TensorFlow实现</a></li>
+</ul></li>
+<li><a href="#variational-autoencoder变分自编码器-vae">Variational AutoEncoder变分自编码器(VAE)</a>
+<ul>
+<li>
+<ul>
+<li><a href="#继续思考">继续思考：</a></li>
+<li><a href="#根据这些思考我们来定义损失函数">根据这些思考我们来定义损失函数：</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#adversarial-autoencoder对抗自编码器">Adversarial AutoEncoder对抗自编码器</a></li>
+<li><a href="#restricted-bolzmann-machine受限制玻尔兹曼机-rbm">Restricted Bolzmann Machine受限制玻尔兹曼机(RBM)</a></li>
+<li><a href="#deep-blief-network深度信念网络-dbn">Deep Blief Network深度信念网络(DBN)</a></li>
+</ul></li>
+</ul>
+</nav>
+                </div>
+            </div>
+            <div class="post-toc-mobile" id="post-toc-mobile">
+                <details>
+                    <summary><div class="post-toc-title"><span>目录</span><span><i class="details icon fas fa-angle-down"></i></span></div></summary>
+                    <div class="post-toc-content">
+                        
+                        
+                        <nav id="TableOfContentsMobile">
+<ul>
+<li>
+<ul>
+<li><a href="#用ae来做预训练">用AE来做预训练</a></li>
+<li><a href="#de-noising-auto-encoder去噪自动编码器-dae">De-noising Auto-Encoder去噪自动编码器(DAE)</a></li>
+<li><a href="#contractive-auto-encoder压缩自动编码器-cae">Contractive Auto-Encoder压缩自动编码器(CAE)</a></li>
+<li><a href="#sparse-autoencoder稀疏自编码器-sae">Sparse AutoEncoder稀疏自编码器(SAE)</a>
+<ul>
+<li><a href="#tensorflow实现">TensorFlow实现</a></li>
+</ul></li>
+<li><a href="#variational-autoencoder变分自编码器-vae">Variational AutoEncoder变分自编码器(VAE)</a>
+<ul>
+<li>
+<ul>
+<li><a href="#继续思考">继续思考：</a></li>
+<li><a href="#根据这些思考我们来定义损失函数">根据这些思考我们来定义损失函数：</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#adversarial-autoencoder对抗自编码器">Adversarial AutoEncoder对抗自编码器</a></li>
+<li><a href="#restricted-bolzmann-machine受限制玻尔兹曼机-rbm">Restricted Bolzmann Machine受限制玻尔兹曼机(RBM)</a></li>
+<li><a href="#deep-blief-network深度信念网络-dbn">Deep Blief Network深度信念网络(DBN)</a></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                </details>
+            </div>
+
+        <div class="post-content">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+<p>Auto-Encoder是一种无监督的学习算法，主要用于数据的降维或者特征的抽取</p>
+
+<p><img src="https://pic3.zhimg.com/80/v2-6ae3bb60daaf8a207600c5cd3ef13562_hd.jpg" width=500 align=center></p>
+
+<p><img src="https://pic4.zhimg.com/80/v2-8d41c425c787c5a58e0ba8cad29976ef_hd.jpg" width=600 align=center></p>
+
+<p>一个Encoder和一个Decoder组成，整个训练过程就是Encode后再Decode看看output和input差别大不大。这样取最中间的bottleneck层就好。</p>
+
+<blockquote>
+<p>一般情况下，Encoder和Decoder的结构是互逆的。</p>
+</blockquote>
+
+<p>因为自编码器学习如何根据训练期间从数据中发现的属性（即，输入特征向量之间的相关性）来压缩数据，所以这些模型通常仅能够<strong>重构与训练中观察到的模型相似的数据</strong>。</p>
+
+<p>自编码器的应用包括：
+* 异常检测
+* 数据去噪（例如图像，音频）
+* 图像修复
+* 信息检索</p>
+
+<a class="post-dummy-target" id="用ae来做预训练"></a><h2>用AE来做预训练</h2>
+
+<p><span style="color: red">这个方法非常适合半监督学习或者监督学习时，有标签数据较少的情况。可以先用unlabeled数据利用AE的方式训练出每一层，再用labeled数据训练，调整参数即可。</span></p>
+
+<p><center></p>
+
+
+<div class="mermaid">
+graph TB;
+  subgraph 架构;
+  L00(input:784)
+  L01(1000)
+  L02(1000)
+  L03(500)
+  L04(output:10)
+  L00 --> L01 --> L02 --> L03 --> L04
+  style L01 fill:green;
+  style L02 fill:blue;
+  end;
+
+  subgraph 预训练3;
+  L30(input:784)
+  L31(1000)
+  L32(1000)
+  L30 --> L31 --> L32 --> L33 --> L32
+  style L31 fill:green;
+  style L32 fill:blue;
+  end;
+
+  subgraph 预训练2;
+  L20(input:784)
+  L21(1000)
+  L22(1000)
+  L20 --> L21 --> L22 --> L21
+  style L21 fill:green;
+  style L22 fill:blue;
+  end;
+
+  subgraph 预训练1;
+  L10(input:784)
+  L11(1000)
+  L10 --> L11 --> L10
+  style L11 fill:green;
+  end;
+</div>
+
+<p></center></p>
+
+<a class="post-dummy-target" id="de-noising-auto-encoder去噪自动编码器-dae"></a><h2>De-noising Auto-Encoder去噪自动编码器(DAE)</h2>
+
+<p>在训练集的input上增加一些噪声，output标签数据集选择同一批干净的数据。这样能<strong>增加AE的鲁棒性，增加他抗噪声干扰的能力</strong>。</p>
+
+<a class="post-dummy-target" id="contractive-auto-encoder压缩自动编码器-cae"></a><h2>Contractive Auto-Encoder压缩自动编码器(CAE)</h2>
+
+<p>人们会期望对于非常相似的输入，学习的编码也会非常相似。我们可以为此训练我们的模型，以便通过要求隐藏层激活的导数相对于输入而言很小。换句话说，对于输入比较小的改动，我们仍然应该保持一个非常类似的编码状态。这与降噪自编码器相似，因为输入的小扰动本质上被认为是噪声，并且我们希望我们的模型对噪声具有很强的鲁棒性。<strong>降噪自编码器使重构函数(解码器)抵抗输入有限小的扰动，而压缩自编码器使特征提取函数(编码器)抵抗输入无限小的扰动。</strong></p>
+
+<p>因为我们明确地鼓励我们的模型学习一种编码，在这种编码中，类似的输入有类似的编码。我们基本上是迫使模型学习如何将输入的临近区域收缩到较小的输出临近区域。注意重构数据的斜率（即微分）对于输入数据的局部邻域来说基本为零。</p>
+
+<p>Contractive Autoencoder(CAE)是Bengio等人在2011年提出的一种新的Autoencoder, 在传统的Autoencoder的重构误差上加上了新的惩罚项, 亦即编码器激活函数对于输入的雅克比矩阵(Jacobian matrix)的Frobenius Norm. CAE的核心思想是尽量捕获训练样本中观察到的variance, 而忽略其他的variance。</p>
+
+<p>作者在围绕什么才是衡量特征好坏的标准上做了大量讨论(如同在DAE中一样)。</p>
+
+<ul>
+<li>sDAE(stacked DAE)和sparse coding的观点是尽量捕获每个训练样本的信息, 如果样本服从某个潜在的生成式分布的话。</li>
+<li>RBM的观点是学到的特征可以很好地刻画输入的分布, 这可以通过直接优化一个生成式模型(比如RBM)的似然得到。</li>
+</ul>
+
+<p>CAE的出发点是, 学到的特征应该对围绕训练样本的输入的细小变动有鲁棒性。</p>
+
+<p>为了提高学到的特征的鲁棒性, CAE以编码器的激活函数对于输入的雅克比矩阵的Frobenius Norm为惩罚项:</p>
+
+<div class='hasJax'>
+[\|J_f(x)\|_F^2 = \sum_{ij}(\frac{\partial h_j(x)}{\partial x_i})^2]
+</div>
+
+<p>惩罚$|J_f|_F^2$项使得到特征空间的映射在训练样本的邻域是紧缩的(contractive).</p>
+
+<p>CAE的思想就是以$|J_f|_F^2$项作为autoencoder的正则化项, 亦即CAE的损失函数为:</p>
+
+<div class='hasJax'>
+[\mathcal{J}_{CAE}(\theta)=\sum_{x\in D_n}(L(x, g(f(x))) + \lambda\|J_f(x)\|_F^2)]
+</div>
+
+<p>Hugo Larochelle做过一个关于CAE的非常精辟的理论解释:</p>
+
+<p>可以把CAE的损失函数的两个组成部分看成是CAE的两个优化目标:
+1. 第一部分(亦即重构误差)使得CAE会尽力去捕获输入图像的好多信息
+2. 第二部分(亦即雅克比矩阵的Frobenius Norm)可以看做是CAE在丢弃所有的信息(因为最小化雅克比矩阵的Frobenius Norm的后果就是梯度会接近于0, 这样的话, 如果改变输入数据, 隐层单元的值不会改变, 亦即如果在训练样本上加一些噪音, 隐层节点的值不变). 所以CAE的目的就是只捕获那些在训练数据中出现的variance, 而对于其他的variance不敏感</p>
+
+<a class="post-dummy-target" id="sparse-autoencoder稀疏自编码器-sae"></a><h2>Sparse AutoEncoder稀疏自编码器(SAE)</h2>
+
+<p>&emsp;一般来说，自编码器的隐层节点数小于输入层的节点数，即在训练过程中，自编码器倾向于去学习数据内部的规律，例如相关性，那么自编码器学习的结果很可能类似于PCA，得到的是输入数据的一个降维表示。</p>
+
+<p>&emsp;那如果我们设定隐层节点数大于输入层节点数，同时又想得到输入数据内一些有趣的结构和规律。我们给自编器加上一个稀疏性的限制，即在同一时间，只有某些隐层节点是“活跃”的，这样整个自编码器就变成稀疏的。</p>
+
+<p>&emsp;假设隐层激活函数采用的是sigmoid，那么隐层输出为1代表这个节点很”活跃”，隐层输出为0代表这个节点”不活跃”。基于此，我们引入KL离散度来衡量某个隐层节点的平均激活输出和我们设定的稀疏度$\rho$之间的相似性：</p>
+
+<div class='hasJax'>
+[KL(\rho || \hat{\rho}_j)=\rho log{\frac{\rho}{\hat{\rho}_j} }+(1-\rho)log{\frac{1-\rho}{1-\hat{\rho}_j}}]
+</div>
+
+<p>其中</p>
+
+<div class='hasJax'>$$\hat{\rho}_j=\frac{1}{m}\sum\limits_{i = 1}^{m}[a^{(2)}_j{x^{(i)}}]$$</div>
+
+<p>，$m$为训练样本的个数，$a^{(2)}_j{x^{(i)}}$为隐层第$j$个节点对$i$个样本的响应输出。一般来说我们设定稀疏系数$\rho=0.05或0.1$。KL离散度越大代表$\rho$和$\hat{\rho}_j$之间相差越大，KL离散度等于0代表两者完全相等$\rho=\hat{\rho}_j$。</p>
+
+<p>&emsp;因此，我们可以将KL离散度作为正则项加入到损失函数中，以此对整个自编码器网络的稀疏行进行约束：</p>
+
+<div class='hasJax'>
+[J_{sparse}(W,b)=J(W,b)+\beta \sum\limits_{j=1}^{s_2}KL(\rho || \hat{\rho}_j)]
+</div>
+
+<a class="post-dummy-target" id="tensorflow实现"></a><h3>TensorFlow实现</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="bp">self</span><span class="o">.</span><span class="n">sparsity_level</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sparse_reg</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reconstruction</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="mf">2.0</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reconstruction</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="mf">2.0</span><span class="p">))</span><span class="o">+</span>\
+                <span class="bp">self</span><span class="o">.</span><span class="n">sparse_reg</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">kl_divergence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sparsity_level</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_encode</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">kl_divergence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">p_hat</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">clip_by_value</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_max</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span>
+                          <span class="o">-</span> <span class="n">p</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">clip_by_value</span><span class="p">(</span><span class="n">p_hat</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_max</span><span class="p">(</span><span class="n">p_hat</span><span class="p">)))</span>
+                          <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">clip_by_value</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_max</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)))</span>
+                          <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">clip_by_value</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p_hat</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_max</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p_hat</span><span class="p">))))</span></code></pre></td></tr></table>
+</div>
+</div>
+<a class="post-dummy-target" id="variational-autoencoder变分自编码器-vae"></a><h2>Variational AutoEncoder变分自编码器(VAE)</h2>
+
+<ul>
+<li>VAE是一个改了中间层的自编码机。</li>
+<li>基本思想来源：中间特征的泛化表示。</li>
+<li>与一般的区别：一般的自编码机就是一个多层网络，中间的特征是一个固定的向量值。而VAE中间的特征是一种分布。</li>
+<li>中间特征的抽象思考：1、如果输入是一个人脸图像，那么中间特征也许表示眼睛大小、肤色、头发种类等等等；2、类似于label smoothing一样，一个不确定的分布会更加符合人们事实的判断，就像去猜一个人的年龄一样，严谨的人会说他在20-25岁之间，而20-25岁的概率是基本符合正态分布的。</li>
+</ul>
+
+<a class="post-dummy-target" id="继续思考"></a><h4>继续思考：</h4>
+
+<ol>
+<li>如果中间层的特征是一个分布，那么服从什么分布——正态分布</li>
+<li>怎么才能让中间层表示一个正态分布呢？
+
+<ul>
+<li>正态分布无外乎是均值和权重就能控制的，那么我的中间层的激活值就是均值+权重</li>
+</ul></li>
+<li>既然是自编码器那么整个网络的输入和输出要尽量相似。</li>
+<li>神经网络的学习能力极好，既然我希望中间层是很多个正态分布的组合向量，那么我不如规定这些正态分布都满足0，1正态分布。</li>
+</ol>
+
+<a class="post-dummy-target" id="根据这些思考我们来定义损失函数"></a><h4>根据这些思考我们来定义损失函数：</h4>
+
+<p>损失函数是为了两个目的：
+1. 所谓自编码，就是要还原自己的样子，所以输入和输出的比较是不可少的
+2. 既然希望中间层满足0,1正态分布，那么我们就把输出的分布和0，1正态分布来做比较，那么分布与分布之间的比较使用到了KL散度，也是就是相对熵。</p>
+
+<p>所以损失函数最后就出来了。通过反向传播，来达到目的。最后我们通过中间层的随机在正态分布上取值的手段就能生成类似的图像。</p>
+
+<a class="post-dummy-target" id="adversarial-autoencoder对抗自编码器"></a><h2>Adversarial AutoEncoder对抗自编码器</h2>
+
+<p>将GAN的思路引入AutoEncoder，也取得了不错的效果。</p>
+
+<p>对抗自编码器的网络结构主要分成两大部分：自编码部分（上半部分）、GAN判别网络（下半部分）。整个框架也就是GAN和AutoEncoder框架二者的结合。训练过程分成两个阶段：首先是样本重构阶段，通过梯度下降更新自编码器encoder部分、以及decoder的参数、使得重构损失函数最小化；然后是正则化约束阶段，交替更新判别网络参数和生成网络（encoder部分）参数以此提高encoder部分混淆判别网络的能力。</p>
+
+<p>一旦训练完毕，自编码器的encoder部分便学习到了从样本数据x到抽象特征z的映射关系。</p>
+
+<p><img src="https://upload-images.jianshu.io/upload_images/6274743-f9502ccbac728f51.png?imageMogr2/auto-orient/strip|imageView2/2/w/1126/format/webp
+" width=500 align=center></p>
+
+<a class="post-dummy-target" id="restricted-bolzmann-machine受限制玻尔兹曼机-rbm"></a><h2>Restricted Bolzmann Machine受限制玻尔兹曼机(RBM)</h2>
+
+<a class="post-dummy-target" id="deep-blief-network深度信念网络-dbn"></a><h2>Deep Blief Network深度信念网络(DBN)</h2>
+
+<hr />
+
+<p>[1] <a href="https://zhuanlan.zhihu.com/p/68903857">https://zhuanlan.zhihu.com/p/68903857</a></p>
+
+        </div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>本文于 2019-12-26 更新</span>
+            </div>
+            <div class="post-info-license">
+                
+            </div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md">
+                
+                    
+                        <span><a class="link-to-markdown" href="https://qiubinyang.github.io/2019/12/ae/index.md" target="_blank">阅读原始文档</a></span>
+                    
+                
+            </div>
+            <div class="post-info-share">
+                
+                    <span>
+    
+        <a href="//twitter.com/share?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f12%2fae%2f&amp;text=Auto-Encoder%e6%80%bb%e7%bb%93&amp;via=" target="_blank" title="Share on Twitter">
+            <i class="fab fa-twitter fa-fw"></i>
+        </a>
+    
+    
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fqiubinyang.github.io%2f2019%2f12%2fae%2f" target="_blank" title="Share on Facebook">
+            <i class="fab fa-facebook-square fa-fw"></i>
+        </a>
+    
+    
+        <a href="//reddit.com/submit?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f12%2fae%2f&amp;title=Auto-Encoder%e6%80%bb%e7%bb%93" target="_blank" title="Share on Reddit">
+            <i class="fab fa-reddit fa-fw"></i>
+        </a>
+    
+    
+    
+    
+    
+    
+    
+    
+        <a href="//service.weibo.com/share/share.php?url=https%3a%2f%2fqiubinyang.github.io%2f2019%2f12%2fae%2f&amp;appkey=&amp;title=Auto-Encoder%e6%80%bb%e7%bb%93" target="_blank" title="Share on Weibo">
+            <i class="fab fa-weibo fa-fw"></i>
+        </a>
+    
+</span>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section>
+            
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/"><i class="fas fa-tag fa-fw"></i>基础知识笔记</a>
+                    </span>
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><i class="fas fa-tag fa-fw"></i>机器学习</a>
+                    </span>
+                
+                    <span class="tag">
+                        <a href="https://qiubinyang.github.io/tags/auto-encoder/"><i class="fas fa-tag fa-fw"></i>Auto-Encoder</a>
+                    </span>
+                
+            
+        </section>
+        <section>
+            <span><a href="javascript:window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="https://qiubinyang.github.io/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+            <a href="https://qiubinyang.github.io/2019/12/jacobian/" class="prev" rel="prev" title="Jacobian Matrix"><i class="fas fa-angle-left fa-fw"></i>Jacobian Matrix</a>
+        
+        
+    </div>
+</div>
+
+        <div class="post-comment">
+            
+        </div>
+    </article></div>
+            </main>
+            <footer class="footer">
+    <div class="copyright">
+        <div class="copyright-line">
+            由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+        <div class="copyright-line">
+            <i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://qiubinyang.github.io/">KevinQiu</a></span><span class="license">&nbsp;|&nbsp;<a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+    </div>
+</footer>
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+
+    
+    
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+<script src="/js/lib/jquery/jquery.slim.min.min.js"></script>
+<script src="/js/lib/lazysizes/lazysizes.min.min.js"></script>
+<script src="/js/lib/smooth-scroll/smooth-scroll.polyfills.min.min.js"></script><script>window.scroll = new SmoothScroll('[data-scroll]', {speed: 300, speedAsDuration: true});</script>
+
+
+    
+    
+        
+    
+
+    
+        <script src="/js/lib/mermaid/mermaid.min.min.js"></script><script>mermaid.initialize({startOnLoad: true, theme: null,});</script>
+    
+
+
+
+    
+
+    
+
+
+
+
+
+
+<script src="/js/blog.min.js"></script>
+
+
+    
+</div>
+        <a href="#" class="dynamic-to-top" id="dynamic-to-top" data-scroll><span>&nbsp;</span></a>
+    </body>
+</html>
